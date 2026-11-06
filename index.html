@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>ফাইভফোল্ড ক্যাপিটাল</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240' width='64' height='64'><polygon points='139.04,93.02 120.00,14.00 186.04,61.98' fill='%23C2912E'/><polygon points='120.00,126.00 139.04,93.02 186.04,61.98' fill='%239A7020' opacity='1'/><polygon points='157.25,133.92 226.52,91.39 201.29,169.03' fill='%230E6A50'/><polygon points='120.00,126.00 157.25,133.92 201.29,169.03' fill='%230A4F3B' opacity='1'/><polygon points='123.98,163.87 185.83,216.61 104.20,216.61' fill='%230E6A50'/><polygon points='120.00,126.00 123.98,163.87 104.20,216.61' fill='%230A4F3B' opacity='1'/><polygon points='85.21,141.49 54.17,216.61 28.94,138.97' fill='%230E6A50'/><polygon points='120.00,126.00 85.21,141.49 28.94,138.97' fill='%230A4F3B' opacity='1'/><polygon points='94.52,97.70 13.48,91.39 79.52,43.41' fill='%230E6A50'/><polygon points='120.00,126.00 94.52,97.70 79.52,43.41' fill='%230A4F3B' opacity='1'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Tiro+Bangla&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: a bank passbook — summary tiles on top, a ruled ledger underneath, receipts printed in gold-edged slips. */
+:root{
+  --bg:#eef2f0; --surface:#ffffff; --ink:#15211c; --muted:#5a6a63; --line:#d6dfda;
+  --accent:#0e6a50; --accent-soft:#e1f0ea; --gold:#a8792a;
+  --good:#1d8049; --warn:#b06d12; --bad:#b83227; --info:#2b5f9e; --on-accent:#ffffff;
+  --font-display:"Tiro Bangla","Noto Serif Bengali",serif;
+  --font-body:"Hind Siliguri","Noto Sans Bengali",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0e1512; --surface:#16201b; --ink:#e4ebe7; --muted:#97a69f; --line:#28352f;
+    --accent:#3db38a; --accent-soft:#163a2e; --gold:#d6a752;
+    --good:#4cc07c; --warn:#e0a03d; --bad:#ef6a5d; --info:#6ea5e8; --on-accent:#08130e; color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.55}
+h1,h2,h3{font-family:var(--font-display);font-weight:400;text-wrap:balance;margin:0}
+h1{font-size:1.55rem} h2{font-size:1.25rem} h3{font-size:1.05rem}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--accent)}
+.num{font-variant-numeric:tabular-nums}
+header.top{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.top-in{max-width:1120px;margin:0 auto;padding:12px 16px 0;display:flex;flex-direction:column;gap:8px}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand small{color:var(--muted);display:block;font-size:.82rem}
+.role{font-size:.78rem;padding:3px 10px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+nav.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+nav.tabs a{padding:8px 12px;text-decoration:none;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;font-weight:500}
+nav.tabs a[aria-current="page"]{color:var(--accent);border-color:var(--accent)}
+main{max-width:1120px;margin:0 auto;padding:18px 16px 60px;display:flex;flex-direction:column;gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.narrow{max-width:520px;margin:30px auto;width:100%;display:flex;flex-direction:column;gap:12px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;border-left:4px solid var(--line)}
+.tile .l{color:var(--muted);font-size:.85rem}
+.tile .v{font-size:1.4rem;font-weight:700;font-variant-numeric:tabular-nums}
+.tile .s{color:var(--muted);font-size:.8rem}
+.tile.main{border-left-color:var(--accent)} .tile.warn{border-left-color:var(--warn)} .tile.gold{border-left-color:var(--gold)} .tile.info{border-left-color:var(--info)} .tile.bad{border-left-color:var(--bad)}
+.grid2{display:grid;grid-template-columns:1.4fr 1fr;gap:18px}
+@media (max-width:820px){.grid2{grid-template-columns:1fr}}
+.btn{border:1px solid var(--line);background:var(--surface);padding:7px 13px;border-radius:7px;cursor:pointer;font-weight:500;text-decoration:none;display:inline-block}
+.btn:hover{border-color:var(--accent)}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn.p{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.btn.sm{padding:3px 9px;font-size:.85rem}
+.btn.danger{color:var(--bad)}
+.btn.p.danger{background:var(--bad);border-color:var(--bad);color:#fff}
+.btn:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:8px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:.82rem}
+td.r,th.r{text-align:right}
+.chip{display:inline-block;font-size:.76rem;padding:1px 8px;border-radius:99px;border:1px solid currentColor;white-space:nowrap;font-weight:600}
+.c-good{color:var(--good)} .c-warn{color:var(--warn)} .c-bad{color:var(--bad)} .c-info{color:var(--info)} .c-muted{color:var(--muted)} .c-gold{color:var(--gold)} .c-acc{color:var(--accent)}
+.muted{color:var(--muted)} .small{font-size:.85rem}
+.alert{background:var(--surface);border-radius:8px;padding:10px 12px;border:1px solid var(--line);border-left:4px solid var(--warn)}
+.alert.bad{border-left-color:var(--bad)} .alert.good{border-left-color:var(--good)} .alert.info{border-left-color:var(--info)}
+.grid-months{display:grid;gap:4px}
+.cell{border-radius:5px;padding:4px 2px;text-align:center;font-size:.78rem;font-weight:600;min-width:58px}
+.cell.paid{background:color-mix(in srgb,var(--good) 18%,transparent);color:var(--good)}
+.cell.partial{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}
+.cell.late{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.cell.pending{background:color-mix(in srgb,var(--info) 14%,transparent);color:var(--info)}
+.cell.future,.cell.na{color:var(--muted);background:transparent;border:1px dashed var(--line)}
+.members{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.mcard{display:flex;flex-direction:column;gap:6px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;font-size:.88rem}
+.kv dt{color:var(--muted)} .kv dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--accent)}
+.empty{padding:22px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:10px}
+#modal{position:fixed;inset:0;background:rgba(5,12,9,.55);display:none;align-items:flex-start;justify-content:center;padding:28px 12px;overflow-y:auto;z-index:20}
+#modal.open{display:flex}
+.dlg{background:var(--surface);border-radius:12px;max-width:640px;width:100%;padding:18px;border:1px solid var(--line);display:flex;flex-direction:column;gap:12px}
+.dlg.wide{max-width:860px}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px}
+.form .full{grid-column:1/-1}
+@media (max-width:520px){.form{grid-template-columns:1fr}}
+label.f{display:flex;flex-direction:column;gap:3px;font-size:.86rem;color:var(--muted)}
+label.f input,label.f select,label.f textarea{border:1px solid var(--line);background:var(--bg);border-radius:7px;padding:7px 9px;color:var(--ink);font-size:.95rem}
+label.cb{display:flex;gap:6px;align-items:center;font-size:.9rem}
+textarea{min-height:70px;resize:vertical}
+.checks{display:flex;flex-wrap:wrap;gap:6px}
+.checks label{display:flex;gap:5px;align-items:center;border:1px solid var(--line);border-radius:7px;padding:4px 9px;color:var(--ink);font-size:.88rem;cursor:pointer}
+.proofs{display:flex;gap:6px;flex-wrap:wrap}
+.receipt-img{width:100%;border-radius:8px;border:1px solid var(--line)}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:8px;z-index:30;font-size:.92rem;max-width:90vw}
+.doc h2{margin:18px 0 6px;font-size:1.1rem}
+.doc p{margin:6px 0;max-width:70ch}
+.doc ul{margin:4px 0 4px 18px;padding:0;max-width:70ch}
+.steps{display:flex;flex-direction:column;gap:10px}
+.step{display:grid;grid-template-columns:34px 1fr;gap:10px}
+.step b.n{width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:700}
+.step.now b.n{background:var(--accent);color:var(--on-accent)}
+svg text{fill:var(--muted);font-family:var(--font-body);font-size:11px}
+.loading{padding:40px;text-align:center;color:var(--muted)}
+code{background:var(--accent-soft);padding:1px 5px;border-radius:4px;font-size:.88em;word-break:break-all}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <div class="brand">
+    <div class="row" style="gap:12px;flex-wrap:nowrap"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="46" height="46" aria-hidden="true"><polygon points="139.04,93.02 120.00,14.00 186.04,61.98" fill="#C2912E"/><polygon points="120.00,126.00 139.04,93.02 186.04,61.98" fill="#9A7020" opacity="1"/><polygon points="157.25,133.92 226.52,91.39 201.29,169.03" fill="#0E6A50"/><polygon points="120.00,126.00 157.25,133.92 201.29,169.03" fill="#0A4F3B" opacity="1"/><polygon points="123.98,163.87 185.83,216.61 104.20,216.61" fill="#0E6A50"/><polygon points="120.00,126.00 123.98,163.87 104.20,216.61" fill="#0A4F3B" opacity="1"/><polygon points="85.21,141.49 54.17,216.61 28.94,138.97" fill="#0E6A50"/><polygon points="120.00,126.00 85.21,141.49 28.94,138.97" fill="#0A4F3B" opacity="1"/><polygon points="94.52,97.70 13.48,91.39 79.52,43.41" fill="#0E6A50"/><polygon points="120.00,126.00 94.52,97.70 79.52,43.41" fill="#0A4F3B" opacity="1"/></svg><div><h1 id="gname">ফাইভফোল্ড ক্যাপিটাল</h1><small id="gsub">Fivefold Capital · সুদমুক্ত সঞ্চয় ও বিনিয়োগ</small></div></div>
+    <div class="row"><span class="role" id="role">লোড হচ্ছে…</span><span id="hdrBtns" class="row"></span></div>
+  </div>
+  <nav class="tabs" id="tabs"></nav>
+</div></header>
+<main id="app"><div class="loading">লোড হচ্ছে…</div></main>
+<div id="modal" role="dialog" aria-modal="true"></div>
+
+<script>
+"use strict";
+/* =========================================================================
+   পঞ্চবন্ধু তহবিল — GitHub Pages সংস্করণ
+   ফাইভফোল্ড ক্যাপিটাল — হিসাব ব্যবস্থা
+   ডেটা: একই রিপোজিটরির data/fund.enc ফাইলে AES-GCM এনক্রিপ্টেড JSON।
+   পড়া: যে কেউ পাসফ্রেজ জানলে। লেখা: শুধু GitHub টোকেনধারী অ্যাডমিন (সাধারণত প্রধান অর্থ কর্মকর্তা)।
+   ========================================================================= */
+const APP_ID = "ponchobondhu-fund";
+const DATA_PATH = "data/fund.enc";
+const PROOF_DIR = "data/proofs/";
+const KDF_ITER = 600000;
+
+/* ---------- Bangla helpers ---------- */
+const BN_D = "০১২৩৪৫৬৭৮৯";
+const bn = s => String(s).replace(/\d/g, d => BN_D[d]);
+const MONTHS = ["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"];
+const W = ("শূন্য এক দুই তিন চার পাঁচ ছয় সাত আট নয় দশ এগারো বারো তেরো চৌদ্দ পনেরো ষোলো সতেরো আঠারো উনিশ বিশ একুশ বাইশ তেইশ চব্বিশ পঁচিশ ছাব্বিশ সাতাশ আটাশ ঊনত্রিশ ত্রিশ একত্রিশ বত্রিশ তেত্রিশ চৌত্রিশ পঁয়ত্রিশ ছত্রিশ সাঁইত্রিশ আটত্রিশ ঊনচল্লিশ চল্লিশ একচল্লিশ বিয়াল্লিশ তেতাল্লিশ চুয়াল্লিশ পঁয়তাল্লিশ ছেচল্লিশ সাতচল্লিশ আটচল্লিশ ঊনপঞ্চাশ পঞ্চাশ একান্ন বাহান্ন তিপ্পান্ন চুয়ান্ন পঞ্চান্ন ছাপ্পান্ন সাতান্ন আটান্ন ঊনষাট ষাট একষট্টি বাষট্টি তেষট্টি চৌষট্টি পঁয়ষট্টি ছেষট্টি সাতষট্টি আটষট্টি ঊনসত্তর সত্তর একাত্তর বাহাত্তর তিয়াত্তর চুয়াত্তর পঁচাত্তর ছিয়াত্তর সাতাত্তর আটাত্তর ঊনআশি আশি একাশি বিরাশি তিরাশি চুরাশি পঁচাশি ছিয়াশি সাতাশি আটাশি ঊননব্বই নব্বই একানব্বই বিরানব্বই তিরানব্বই চুরানব্বই পঁচানব্বই ছিয়ানব্বই সাতানব্বই আটানব্বই নিরানব্বই").split(" ");
+function words(n){
+  n = Math.round(Math.abs(n));
+  if (n === 0) return "শূন্য";
+  const parts = [];
+  const crore = Math.floor(n / 1e7); n %= 1e7;
+  if (crore) parts.push((crore < 100 ? W[crore] : words(crore)) + " কোটি");
+  const lakh = Math.floor(n / 1e5); n %= 1e5;
+  if (lakh) parts.push(W[lakh] + " লক্ষ");
+  const th = Math.floor(n / 1000); n %= 1000;
+  if (th) parts.push(W[th] + " হাজার");
+  const h = Math.floor(n / 100); n %= 100;
+  if (h) parts.push(W[h] + "শত");
+  if (n) parts.push(W[n]);
+  return parts.join(" ");
+}
+const tk = n => (n < 0 ? "−" : "") + "৳" + bn(Math.round(Math.abs(n || 0)).toLocaleString("en-IN"));
+const tkWords = n => words(n) + " টাকা মাত্র";
+const ym = d => d.slice(0, 7);
+const mLabel = m => m ? MONTHS[+m.slice(5, 7) - 1] + " " + bn(m.slice(0, 4)) : "";
+const dLabel = d => d ? bn(d.slice(8, 10)) + " " + MONTHS[+d.slice(5, 7) - 1] + " " + bn(d.slice(0, 4)) : "";
+function todayISO(){ const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0"); }
+function addMonths(m, k){ let y = +m.slice(0,4), mo = +m.slice(5,7) - 1 + k; y += Math.floor(mo/12); mo = ((mo%12)+12)%12; return y + "-" + String(mo+1).padStart(2,"0"); }
+function monthRange(a, b){ const out = []; let m = a; while (m <= b && out.length < 600) { out.push(m); m = addMonths(m, 1); } return out; }
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const sum = (arr, f) => arr.reduce((a, x) => a + (+f(x) || 0), 0);
+const genId = p => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const nowIso = () => new Date().toISOString();
+
+/* ---------- Local storage (only this device's conveniences) ---------- */
+const LS = {
+  get(k){ try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v){ try { localStorage.setItem(k, v); } catch (e) {} },
+  del(k){ try { localStorage.removeItem(k); } catch (e) {} }
+};
+
+/* ---------- Crypto (Web Crypto: PBKDF2 → AES-GCM 256) ---------- */
+const te = new TextEncoder(), td = new TextDecoder();
+function b64(u8){ let s = ""; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); }
+const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+async function deriveKey(pass, salt, iter){
+  const base = await crypto.subtle.importKey("raw", te.encode(pass), "PBKDF2", false, ["deriveKey"]);
+  return crypto.subtle.deriveKey({ name: "PBKDF2", salt, iterations: iter, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, true, ["encrypt", "decrypt"]);
+}
+async function encBytes(key, bytes){ const iv = crypto.getRandomValues(new Uint8Array(12)); const ct = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, bytes)); return { iv: b64(iv), ct: b64(ct) }; }
+async function decBytes(key, o){ return new Uint8Array(await crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64(o.iv) }, key, unb64(o.ct))); }
+async function exportKey(key){ return b64(new Uint8Array(await crypto.subtle.exportKey("raw", key))); }
+async function importKey(raw){ return crypto.subtle.importKey("raw", unb64(raw), { name: "AES-GCM" }, true, ["encrypt", "decrypt"]); }
+
+/* ---------- GitHub connection ---------- */
+const GH = { owner: "", repo: "", token: "", branch: "main",
+  url(p){ return `https://api.github.com/repos/${this.owner}/${this.repo}/contents/${p}`; },
+  headers(accept){ const h = { Accept: accept || "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" }; if (this.token) h.Authorization = "Bearer " + this.token; return h; },
+  async fail(r){ let msg = ""; try { msg = (await r.json()).message || ""; } catch (e) {} const e = new Error(msg || ("HTTP " + r.status)); e.status = r.status; e.conflict = r.status === 409 || (r.status === 422 && /sha/i.test(msg)); throw e; },
+  /* returns {sha, text} or null if file missing */
+  async getFile(p){
+    const r = await fetch(this.url(p) + "?t=" + Date.now(), { headers: this.headers(), cache: "no-store" });
+    if (r.status === 404) return null;
+    if (!r.ok) await this.fail(r);
+    const j = await r.json();
+    if (j.content && j.encoding === "base64") return { sha: j.sha, text: atob(j.content.replace(/\s/g, "")) };
+    const r2 = await fetch(this.url(p) + "?t=" + Date.now(), { headers: this.headers("application/vnd.github.raw+json"), cache: "no-store" });
+    if (!r2.ok) await this.fail(r2);
+    return { sha: j.sha, text: await r2.text() };
+  },
+  /* read-only: API first (fresh), then the Pages copy (may be a few minutes old) */
+  async getText(p){
+    try {
+      const r = await fetch(this.url(p) + "?t=" + Date.now(), { headers: this.headers("application/vnd.github.raw+json"), cache: "no-store" });
+      if (r.status === 404) return { text: null, stale: false };
+      if (r.ok) return { text: await r.text(), stale: false };
+    } catch (e) {}
+    const r = await fetch("./" + p + "?t=" + Date.now(), { cache: "no-store" });
+    if (r.status === 404) return { text: null, stale: true };
+    if (!r.ok) await this.fail(r);
+    return { text: await r.text(), stale: true };
+  },
+  async put(p, text, sha, message){
+    const body = { message, content: btoa(text) }; if (sha) body.sha = sha;
+    const r = await fetch(this.url(p), { method: "PUT", headers: Object.assign(this.headers(), { "Content-Type": "application/json" }), body: JSON.stringify(body) });
+    if (!r.ok) await this.fail(r);
+    return r.json();
+  },
+  async checkToken(){
+    const r = await fetch(`https://api.github.com/repos/${this.owner}/${this.repo}`, { headers: this.headers(), cache: "no-store" });
+    if (!r.ok) await this.fail(r);
+    const j = await r.json(); this.branch = j.default_branch || "main";
+    return !!(j.permissions && j.permissions.push);
+  },
+  historyUrl(){ return `https://github.com/${this.owner}/${this.repo}/commits/${this.branch}/${DATA_PATH}`; }
+};
+function detectRepo(){
+  const saved = LS.get("fund.repo");
+  if (saved && saved.includes("/")) { [GH.owner, GH.repo] = saved.split("/"); return true; }
+  const h = location.hostname;
+  if (h.endsWith(".github.io")) { GH.owner = h.split(".")[0]; const seg = location.pathname.split("/").filter(Boolean)[0]; GH.repo = seg && !seg.includes(".") ? seg : h; return true; }
+  return false;
+}
+const lsKey = k => `fund.${k}.${GH.owner}/${GH.repo}`;
+
+/* ---------- State ---------- */
+const DEFAULT_CFG = {
+  groupName: "ফাইভফোল্ড ক্যাপিটাল", groupNameEn: "Fivefold Capital", custodyLabel: "প্রধান অর্থ কর্মকর্তার হেফাজতে", startMonth: "2026-11", dueDay: 12, depositByDay: 20,
+  rates: [{ from: "2026-11", amount: 2000 }],
+  accounts: { bankA: { label: "যৌথ হিসাব-১", bank: "সোনালী ব্যাংক", branch: "", last4: "", opened: "" },
+              bankB: { label: "যৌথ হিসাব-২", bank: "সোনালী ব্যাংক", branch: "", last4: "", opened: "" } },
+  managerName: "", loanMaxPct: 100, approvalNeeded: 4,
+  goals: [{ name: "১ বিঘা জমি (উদাহরণ)", amount: 600000 }],
+  roles: [
+    { id: "chair", bn: "চেয়ারম্যান", en: "Chairman", duty: "সভা পরিচালনা, নেতৃত্ব, চূড়ান্ত অনুমোদন ও প্রতিনিধিত্ব; যৌথ হিসাবের সহ-স্বাক্ষরকারী" },
+    { id: "cfo", bn: "প্রধান অর্থ কর্মকর্তা", en: "Chief Financial Officer (CFO)", duty: "চাঁদা সংগ্রহ, রসিদ, ব্যাংকে জমা, খতিয়ান ও মাসিক আর্থিক প্রতিবেদন" },
+    { id: "cio", bn: "প্রধান বিনিয়োগ কর্মকর্তা", en: "Chief Investment Officer (CIO)", duty: "বিনিয়োগ আইডিয়া, মাঠপর্যায়ে যাচাই, বিনিয়োগ পরিকল্পনা ও তদারকি" },
+    { id: "secretary", bn: "কোম্পানি সচিব", en: "Company Secretary", duty: "সভার নোটিশ, কার্যবিবরণী, প্যাডে চিঠিপত্র, নথি ও চুক্তি সংরক্ষণ" },
+    { id: "cro", bn: "প্রধান ঝুঁকি ও কমপ্লায়েন্স কর্মকর্তা", en: "Chief Risk & Compliance Officer (CRO)", duty: "বকেয়া তদারকি ও সতর্কীকরণ, ত্রৈমাসিক নিরীক্ষা, সুদমুক্ত নীতি রক্ষা" }
+  ]
+};
+const emptyData = () => ({ cfg: JSON.parse(JSON.stringify(DEFAULT_CFG)), bylaws: null, members: [], txns: [], loans: [], invs: [], decisions: [], audit: [] });
+let D = null;                 // decrypted data
+let KEY = null, SALT = null, FILE_SHA = null;
+const S = { phase: "boot", msg: "", stale: false, canEdit: false, ui: { fType: "", fMember: "", fWallet: "" }, lastLoad: 0,
+  get cfg(){ return D && D.cfg; }, get bylaws(){ return D && D.bylaws; }, get members(){ return D ? D.members : []; }, get txns(){ return D ? D.txns : []; },
+  get loans(){ return D ? D.loans : []; }, get invs(){ return D ? D.invs : []; }, get decisions(){ return D ? D.decisions : []; }, get audit(){ return D ? D.audit : []; } };
+const cfg = () => Object.assign({}, DEFAULT_CFG, S.cfg || {}, { accounts: Object.assign({}, DEFAULT_CFG.accounts, (S.cfg||{}).accounts || {}) });
+
+async function encryptData(data){
+  const blob = await encBytes(KEY, te.encode(JSON.stringify(data)));
+  return JSON.stringify({ app: APP_ID, v: 1, kdf: { name: "PBKDF2-SHA256", iter: KDF_ITER, salt: b64(SALT) }, iv: blob.iv, ct: blob.ct });
+}
+async function decryptFile(text, key){
+  const f = JSON.parse(text);
+  if (f.app !== APP_ID) throw new Error("এটি তহবিলের ডেটা ফাইল নয়");
+  return JSON.parse(td.decode(await decBytes(key, f)));
+}
+function normalize(d){ const e = emptyData(); for (const k of Object.keys(e)) if (d[k] === undefined) d[k] = e[k]; return d; }
+
+/* Load latest data. With a token we also learn the file's sha, needed to write. */
+async function loadData(){
+  let text, stale = false;
+  if (GH.token) { const f = await GH.getFile(DATA_PATH); if (!f) return null; text = f.text; FILE_SHA = f.sha; }
+  else { const r = await GH.getText(DATA_PATH); if (r.text === null) return null; text = r.text; stale = r.stale; }
+  S.stale = stale; S.lastLoad = Date.now();
+  return text;
+}
+/* Every change is one commit: apply fn to a copy, encrypt, PUT. On a conflict, reload and re-apply once. */
+async function commit(message, fn){
+  if (!S.canEdit) throw new Error("লিখতে হলে অ্যাডমিন লগইন লাগবে");
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const draft = JSON.parse(JSON.stringify(D));
+    fn(draft);
+    const text = await encryptData(draft);
+    try {
+      const r = await GH.put(DATA_PATH, text, FILE_SHA, message);
+      FILE_SHA = r.content.sha; D = draft; schedule(); return;
+    } catch (e) {
+      if (e.conflict && attempt === 0) { const t = await loadData(); if (t) D = normalize(await decryptFile(t, KEY)); continue; }
+      throw e;
+    }
+  }
+}
+
+/* ---------- Domain logic ---------- */
+const TYPES = {
+  contribution: { l: "চাঁদা জমা", c: "c-good" },
+  transfer: { l: "ব্যাংকে জমা", c: "c-info" },
+  loan_disburse: { l: "ঋণ প্রদান", c: "c-warn" },
+  loan_repay: { l: "ঋণ ফেরত", c: "c-good" },
+  invest_out: { l: "বিনিয়োগ প্রদান", c: "c-warn" },
+  invest_in: { l: "বিনিয়োগ ফেরত/লাভ", c: "c-good" },
+  expense: { l: "খরচ", c: "c-bad" },
+  riba_in: { l: "ব্যাংক সুদ (আলাদা)", c: "c-gold" },
+  riba_out: { l: "সুদের টাকা দান", c: "c-gold" }
+};
+const METHODS = { cash: "ক্যাশ (হাতে হাতে)", bkash: "বিকাশ", nagad: "নগদ (Nagad)", rocket: "রকেট", bank: "ব্যাংক ট্রান্সফার", direct: "সরাসরি যৌথ হিসাবে জমা", other: "অন্যান্য" };
+function walletName(w){ const c = cfg(); if (w === "custody") return c.custodyLabel || "প্রধান অর্থ কর্মকর্তার হেফাজতে"; if (c.accounts[w]) return c.accounts[w].label; return w || ""; }
+const WALLETS = ["custody","bankA","bankB"];
+function flows(t){
+  const a = +t.amount || 0, f = {};
+  switch (t.type) {
+    case "contribution": case "loan_repay": case "invest_in": case "riba_in": f[t.to] = a; break;
+    case "transfer": f[t.from] = -a; f[t.to] = (f[t.to]||0) + a; break;
+    case "loan_disburse": case "invest_out": case "expense": case "riba_out": f[t.from] = -a; break;
+  }
+  return f;
+}
+function rateFor(m){ const r = (cfg().rates || []).slice().sort((x,y)=>x.from<y.from?-1:1); let a = 0; for (const x of r) if (x.from <= m) a = +x.amount; return a; }
+const memberById = id => S.members.find(m => m.id === id);
+const mName = id => (memberById(id) || {}).name || "অজানা সদস্য";
+const roleOf = id => id === "manager" ? "cfo" : id;
+function roleInfo(id){ id = roleOf(id); return (cfg().roles || []).find(x => x.id === id) || null; }
+const roleName = id => { const r = roleInfo(id); return r ? r.bn : "সাধারণ সদস্য"; };
+const contribs = () => S.txns.filter(t => t.type === "contribution");
+function paidFor(memberId, month){ return sum(contribs().filter(t => t.memberId === memberId && (t.months||[]).includes(month)), t => (+t.amount) / (t.months.length || 1)); }
+const curMonth = () => ym(todayISO());
+function monthStatus(member, month){
+  const c = cfg(), join = member.joinMonth || c.startMonth;
+  if (month < join || member.status === "left") return "na";
+  const due = rateFor(month), paid = paidFor(member.id, month);
+  if (paid >= due && due > 0) return "paid";
+  if (paid > 0) return "partial";
+  if (month > curMonth()) return "future";
+  if (todayISO() > month + "-" + String(c.dueDay).padStart(2, "0")) return "late";
+  return "pending";
+}
+const activeMembers = () => S.members.filter(m => m.status !== "left").sort((a,b)=>(+a.order||0)-(+b.order||0));
+function loanOutstanding(l){ const out = sum(S.txns.filter(t => t.type === "loan_disburse" && t.loanId === l.id), t => t.amount); const back = sum(S.txns.filter(t => t.type === "loan_repay" && t.loanId === l.id), t => t.amount); return Math.max(0, out - back); }
+function invCapital(i){ const ins = S.txns.filter(t => t.type === "invest_in" && t.investId === i.id); const out = sum(S.txns.filter(t => t.type === "invest_out" && t.investId === i.id), t => t.amount); const back = sum(ins, t => t.principal); return { out, back, profit: sum(ins, t => t.profit), active: Math.max(0, out - back - (+i.writeOff || 0)) }; }
+function calc(){
+  const bal = { custody: 0, bankA: 0, bankB: 0 };
+  for (const t of S.txns) { const f = flows(t); for (const k in f) bal[k] = (bal[k]||0) + f[k]; }
+  const cash = sum(Object.keys(bal), k => bal[k]);
+  const loansOut = sum(S.loans, l => loanOutstanding(l));
+  const invActive = sum(S.invs, i => invCapital(i).active);
+  const totalContrib = sum(contribs(), t => t.amount);
+  const profit = sum(S.txns.filter(t => t.type === "invest_in"), t => t.profit);
+  const writeOff = sum(S.invs, i => +i.writeOff || 0);
+  const expense = sum(S.txns.filter(t => t.type === "expense"), t => t.amount);
+  const ribaPending = sum(S.txns.filter(t => t.type === "riba_in"), t => t.amount) - sum(S.txns.filter(t => t.type === "riba_out"), t => t.amount);
+  const netProfit = profit - writeOff - expense;
+  const assets = cash + loansOut + invActive, equity = totalContrib + netProfit;
+  const undeposited = contribs().filter(t => t.to === "custody" && !t.depositId);
+  return { bal, cash, loansOut, invActive, totalContrib, profit, writeOff, expense, ribaPending, netProfit, assets, equity, balanced: Math.abs(assets - equity - ribaPending) < 1, undeposited };
+}
+function memberShare(m, k){
+  const c = sum(contribs().filter(t => t.memberId === m.id), t => t.amount);
+  const pct = k.totalContrib ? c / k.totalContrib : 0;
+  return { contributed: c, pct, profitShare: k.netProfit * pct, value: c + k.netProfit * pct, loan: sum(S.loans.filter(l => l.memberId === m.id), l => loanOutstanding(l)) };
+}
+const sortedTxns = () => S.txns.slice().sort((a,b) => (b.date||"").localeCompare(a.date||"") || (b.createdAt||"").localeCompare(a.createdAt||""));
+function verifyCode(t){ let h = 2166136261; const s = [t.id, t.memberId, t.amount, t.date, (t.months||[]).join(",")].join("|"); for (let i=0;i<s.length;i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0).toString(36).toUpperCase().slice(0, 6); }
+function txnDesc(t){
+  const ms = (t.months||[]).map(mLabel).join(", ");
+  switch (t.type) {
+    case "contribution": return `${esc(mName(t.memberId))} — ${esc(ms)}${t.trxId ? ` · TrxID ${esc(t.trxId)}` : ""}`;
+    case "transfer": return `${esc(walletName(t.from))} → ${esc(walletName(t.to))}${t.how ? ` · ${esc(t.how)}` : ""}${t.ref ? ` · রেফ ${esc(t.ref)}` : ""}${(t.linked||[]).length ? ` · ${bn(t.linked.length)}টি রসিদ যুক্ত` : ""}`;
+    case "loan_disburse": case "loan_repay": return `${esc(mName(t.memberId))}${t.note ? " · " + esc(t.note) : ""}`;
+    case "invest_out": case "invest_in": { const i = S.invs.find(x => x.id === t.investId); return `${esc(i ? i.name : "বিনিয়োগ")}${t.type === "invest_in" ? ` · মূলধন ${tk(t.principal)} + লাভ ${tk(t.profit)}` : ""}`; }
+    default: return esc(t.note || "");
+  }
+}
+
+/* ---------- Rendering ---------- */
+const TABS = [["overview","সারসংক্ষেপ"],["collect","মাসিক চাঁদা"],["ledger","খতিয়ান"],["loans","করজে হাসানা"],["invest","বিনিয়োগ"],["members","সদস্য"],["decisions","সভা ও সিদ্ধান্ত"],["rules","নীতিমালা ও রোডম্যাপ"],["settings","সেটিংস"]];
+let TAB = "overview", rq = 0;
+function schedule(){ if (rq) return; rq = requestAnimationFrame(() => { rq = 0; render(); }); }
+function renderHeader(){
+  const unlocked = S.phase === "ready";
+  document.getElementById("tabs").innerHTML = unlocked ? TABS.map(([k,l]) => `<a href="#${k}" ${k===TAB?'aria-current="page"':""}>${l}</a>`).join("") : "";
+  const c = cfg();
+  document.getElementById("gname").textContent = unlocked ? c.groupName : DEFAULT_CFG.groupName;
+  document.getElementById("gsub").textContent = (unlocked ? (c.groupNameEn || "") : DEFAULT_CFG.groupNameEn) + " · সুদমুক্ত সঞ্চয় ও বিনিয়োগ";
+  document.title = unlocked ? c.groupName : DEFAULT_CFG.groupName;
+  document.getElementById("role").textContent = !unlocked ? "লক করা" : S.canEdit ? "অ্যাডমিন · লিখতে পারবেন" : "সদস্য · শুধু দেখা";
+  document.getElementById("hdrBtns").innerHTML = unlocked ? `<button class="btn sm" data-act="refresh">রিফ্রেশ</button>${S.canEdit ? `<button class="btn sm" data-act="logout">অ্যাডমিন লগআউট</button>` : `<button class="btn sm" data-act="login">অ্যাডমিন লগইন</button>`}<button class="btn sm" data-act="lock">লক</button>` : (S.phase === "locked" || S.phase === "nodata") && !S.canEdit ? `<button class="btn sm" data-act="login">অ্যাডমিন লগইন</button>` : "";
+}
+function render(){
+  renderHeader();
+  const app = document.getElementById("app");
+  if (S.phase === "boot") { app.innerHTML = `<div class="loading">${esc(S.msg || "লোড হচ্ছে…")}</div>`; return; }
+  if (S.phase === "norepo") { app.innerHTML = vNoRepo(); return; }
+  if (S.phase === "error") { app.innerHTML = `<div class="narrow card"><h2>সমস্যা হয়েছে</h2><p>${esc(S.msg)}</p><div class="row"><button class="btn p" data-act="retry">আবার চেষ্টা করুন</button></div></div>`; return; }
+  if (S.phase === "nodata") { app.innerHTML = vNoData(); return; }
+  if (S.phase === "locked") { app.innerHTML = vLocked(); setTimeout(() => { const p = document.getElementById("u_pass"); if (p) p.focus(); }, 0); return; }
+  const v = { overview: vOverview, collect: vCollect, ledger: vLedger, loans: vLoans, invest: vInvest, members: vMembers, decisions: vDecisions, rules: vRules, settings: vSettings }[TAB] || vOverview;
+  app.innerHTML = (S.stale ? `<div class="alert info small">GitHub-এর সরাসরি সংযোগ এখন ব্যস্ত, তাই সাইটের কপি থেকে দেখাচ্ছে; কয়েক মিনিট পুরোনো হতে পারে।</div>` : "") + v();
+}
+const eb = html => S.canEdit ? html : "";
+
+function vNoRepo(){
+  return `<div class="narrow card"><h2>রিপোজিটরি সংযোগ</h2>
+  <p class="small muted">এই পেজটি GitHub Pages-এ রাখলে রিপোজিটরি নিজে থেকেই চিনে নেয়। অন্য কোথাও খুললে রিপোজিটরির নাম দিন।</p>
+  <label class="f">GitHub রিপোজিটরি (ইউজারনেম/রিপো)<input id="u_repo" placeholder="shouvic/ponchobondhu-tohobil"></label>
+  <div class="row"><button class="btn p" data-act="saveRepo">সংযুক্ত করুন</button></div></div>`;
+}
+function vLocked(){
+  return `<form class="narrow card" id="unlockForm"><h2>তহবিলের হিসাব খুলুন</h2>
+  <p class="small muted">হিসাব পাসফ্রেজ দিয়ে তালাবদ্ধ। পাসফ্রেজটি প্রধান অর্থ কর্মকর্তা বা কোম্পানি সচিবের কাছ থেকে জেনে নিন।</p>
+  <label class="f">পাসফ্রেজ<input type="password" id="u_pass" autocomplete="current-password"></label>
+  <label class="cb"><input type="checkbox" id="u_remember" checked> এই ডিভাইসে মনে রাখুন</label>
+  ${S.msg ? `<div class="alert bad small">${esc(S.msg)}</div>` : ""}
+  <div class="row"><button class="btn p" type="submit">খুলুন</button></div>
+  <p class="small muted">রিপোজিটরি: <code>${esc(GH.owner)}/${esc(GH.repo)}</code></p></form>`;
+}
+function vNoData(){
+  if (!S.canEdit) return `<div class="narrow card"><h2>এখনো হিসাব শুরু হয়নি</h2><p class="muted">অ্যাডমিন প্রথমবার সেটআপ করলে এখানে হিসাব দেখা যাবে। আপনি অ্যাডমিন হলে উপরের "অ্যাডমিন লগইন" চাপুন।</p><p class="small muted">রিপোজিটরি: <code>${esc(GH.owner)}/${esc(GH.repo)}</code></p></div>`;
+  return `<form class="narrow card" id="setupForm"><h2>নতুন তহবিল সেটআপ</h2>
+  <p class="small muted">একবারই করতে হবে। পাসফ্রেজটি সব সদস্যকে আলাদাভাবে (সামনাসামনি বা ব্যক্তিগত মেসেজে) জানাবেন। পাসফ্রেজ হারালে ডেটা আর খোলা যাবে না, তাই কাগজে লিখে দুজনের কাছে রাখুন।</p>
+  <label class="f">তহবিলের নাম<input id="u_name" value="${esc(DEFAULT_CFG.groupName)}"></label>
+  <label class="f">আপনার নাম (প্রধান অর্থ কর্মকর্তা হিসেবে যুক্ত হবে)<input id="u_mgr"></label>
+  <label class="f">পাসফ্রেজ (অন্তত ১২ অক্ষর; কয়েকটা শব্দের একটা বাক্য ভালো)<input type="password" id="u_pass" autocomplete="new-password"></label>
+  <label class="f">পাসফ্রেজ আবার<input type="password" id="u_pass2" autocomplete="new-password"></label>
+  ${S.msg ? `<div class="alert bad small">${esc(S.msg)}</div>` : ""}
+  <div class="row"><button class="btn p" type="submit">তহবিল তৈরি করুন</button></div></form>`;
+}
+
+function proofsHtml(list){
+  if (!list || !list.length) return "";
+  return `<span class="proofs">${list.map(p => `<button class="btn sm" data-act="viewproof" data-path="${esc(p.path)}" data-type="${esc(p.type)}" data-name="${esc(p.name)}">📎 ${esc(p.name.length > 18 ? p.name.slice(0, 16) + "…" : p.name)}</button>`).join("")}</span>`;
+}
+function statusChip(st){ return { paid: `<span class="chip c-good">পরিশোধিত</span>`, partial: `<span class="chip c-warn">আংশিক</span>`, late: `<span class="chip c-bad">বাকি · দেরি</span>`, pending: `<span class="chip c-info">অপেক্ষমাণ</span>`, future: `<span class="chip c-muted">সামনে</span>`, na: `<span class="chip c-muted">প্রযোজ্য নয়</span>` }[st]; }
+function setupCard(){
+  return `<section class="card"><h2>শুরু করা যাক</h2><p class="muted">প্রথমে পাঁচ বন্ধুকে সদস্য হিসেবে যোগ করুন এবং কে কোন যৌথ হিসাবে থাকবেন (হিসাব-১ এ ৩ জন, হিসাব-২ এ ২ জন) ঠিক করে দিন। তারপর চাঁদা গ্রহণ করে রসিদ পাঠাতে পারবেন।</p>
+  <div class="row">${S.canEdit ? `<button class="btn p" data-act="member">+ সদস্য যোগ করুন</button><a class="btn" href="#settings">সেটিংস দেখুন</a>` : `<span class="muted">অ্যাডমিন সদস্য যোগ করলে এখানে দেখাবে।</span>`}</div></section>`;
+}
+
+function vOverview(){
+  const c = cfg(), k = calc(), cm = curMonth(), am = activeMembers();
+  if (!S.members.length) return setupCard();
+  const alerts = [];
+  if (k.undeposited.length) alerts.push(`<div class="alert">${esc(walletName("custody"))} <b class="num">${tk(sum(k.undeposited, t => t.amount))}</b> আছে (${bn(k.undeposited.length)}টি রসিদ)। ${bn(c.depositByDay)} তারিখের মধ্যে যৌথ হিসাবে জমা দিয়ে স্লিপের ছবি যুক্ত করুন। ${eb(`<button class="btn sm" data-act="transfer">ব্যাংকে জমা লিখুন</button>`)}</div>`);
+  const late = am.filter(m => monthStatus(m, cm) === "late");
+  if (late.length) alerts.push(`<div class="alert bad">${mLabel(cm)}-এর চাঁদা বাকি: ${late.map(m => esc(m.name)).join(", ")}</div>`);
+  const dueLoans = S.loans.filter(l => loanOutstanding(l) > 0 && l.dueDate && l.dueDate < todayISO());
+  if (dueLoans.length) alerts.push(`<div class="alert">ফেরতের তারিখ পার হওয়া ঋণ: ${dueLoans.map(l => esc(mName(l.memberId)) + " " + tk(loanOutstanding(l))).join(", ")}</div>`);
+  if (k.ribaPending > 0) alerts.push(`<div class="alert">ব্যাংক থেকে আসা সুদ <b>${tk(k.ribaPending)}</b> এখনও দান করা হয়নি। এটি সদস্যদের অংশে ধরা হয়নি।</div>`);
+  if (!k.balanced) alerts.push(`<div class="alert bad">হিসাব মিলছে না: সম্পদ ${tk(k.assets)} বনাম জমা+লাভ ${tk(k.equity + k.ribaPending)}। খতিয়ান দেখুন।</div>`);
+  const deadline = cm + "-" + String(c.dueDay).padStart(2, "0");
+  const paidCount = am.filter(m => monthStatus(m, cm) === "paid").length;
+  const monthTarget = sum(am, m => monthStatus(m, cm) === "na" ? 0 : rateFor(cm));
+  const monthGot = sum(am, m => paidFor(m.id, cm));
+  const accTile = id => `<div class="tile info"><div class="l">${esc(c.accounts[id].label)}</div><div class="v">${tk(k.bal[id])}</div><div class="s">${esc(c.accounts[id].bank)}${c.accounts[id].opened ? "" : " · এখনও খোলা হয়নি"}</div></div>`;
+  return `
+  <section class="tiles">
+    <div class="tile main"><div class="l">মোট সম্পদ</div><div class="v">${tk(k.assets)}</div><div class="s">হাতে-ব্যাংকে + ঋণ + বিনিয়োগ</div></div>
+    <div class="tile ${k.bal.custody > 0 ? "warn" : ""}"><div class="l">${esc(walletName("custody"))}</div><div class="v">${tk(k.bal.custody)}</div><div class="s">${k.bal.custody > 0 ? "ব্যাংকে জমার অপেক্ষায়" : "সব টাকা ব্যাংকে"}</div></div>
+    ${accTile("bankA")}${accTile("bankB")}
+    <div class="tile gold"><div class="l">সদস্যদের কাছে ঋণ</div><div class="v">${tk(k.loansOut)}</div><div class="s">সুদমুক্ত করজে হাসানা</div></div>
+    <div class="tile gold"><div class="l">চলমান বিনিয়োগ</div><div class="v">${tk(k.invActive)}</div><div class="s">নিট লাভ/ক্ষতি ${tk(k.netProfit)}</div></div>
+  </section>
+  ${alerts.join("")}
+  <div class="grid2">
+    <section class="card">
+      <div class="card-h"><h2>${mLabel(cm)}-এর চাঁদা</h2><span class="muted small">শেষ তারিখ ${dLabel(deadline)}</span></div>
+      <div class="row" style="justify-content:space-between"><span class="num">${bn(paidCount)}/${bn(am.length)} জন দিয়েছেন</span><b class="num">${tk(monthGot)} / ${tk(monthTarget)}</b></div>
+      <div class="bar" style="margin:8px 0 12px"><i style="width:${monthTarget ? Math.min(100, monthGot / monthTarget * 100) : 0}%"></i></div>
+      <div class="tbl-wrap"><table><tbody>${am.map(m => { const st = monthStatus(m, cm); return `<tr><td>${esc(m.name)}</td><td>${statusChip(st)}</td><td class="r num">${tk(paidFor(m.id, cm))}</td><td class="r">${eb(st !== "paid" && st !== "na" ? `<button class="btn sm" data-act="contrib" data-member="${esc(m.id)}">টাকা গ্রহণ</button>` : "")}</td></tr>`; }).join("")}</tbody></table></div>
+      <div class="row" style="margin-top:12px">${eb(`<button class="btn p" data-act="contrib">+ চাঁদা গ্রহণ ও রসিদ</button>`)}<button class="btn" data-act="report">মাসিক রিপোর্ট কপি</button></div>
+    </section>
+    <section class="card">
+      <div class="card-h"><h2>সাম্প্রতিক লেনদেন</h2><a href="#ledger" class="small">সব দেখুন</a></div>
+      ${S.txns.length ? `<div class="tbl-wrap"><table><tbody>${sortedTxns().slice(0, 7).map(t => `<tr><td class="small muted num">${dLabel(t.date)}</td><td><span class="chip ${TYPES[t.type].c}">${TYPES[t.type].l}</span><div class="small">${txnDesc(t)}</div></td><td class="r num">${tk(t.amount)}</td></tr>`).join("")}</tbody></table></div>` : `<div class="empty">এখনো কোনো লেনদেন নেই। প্রথম চাঁদা গ্রহণ করলে এখানে দেখাবে।</div>`}
+    </section>
+  </div>
+  <section class="card">
+    <div class="card-h"><h2>লক্ষ্য ও সম্ভাব্য অগ্রগতি</h2><span class="muted small">বর্তমান চাঁদার হারে, বিনিয়োগের লাভ বাদে</span></div>
+    ${projectionChart(k)}${goalRows(k)}
+  </section>`;
+}
+function niceStep(v){ const p = Math.pow(10, Math.floor(Math.log10(v))); const n = v / p; return (n < 1.5 ? 1 : n < 3.5 ? 2 : n < 7.5 ? 5 : 10) * p; }
+function projectionChart(k){
+  const c = cfg(), cm = curMonth(), am = activeMembers();
+  const start = c.startMonth <= cm ? c.startMonth : cm, end = addMonths(cm, 36);
+  const months = monthRange(start, end);
+  let run = 0; const actual = [], byMonth = {};
+  for (const t of contribs()) { const mm = ym(t.date || todayISO()); byMonth[mm] = (byMonth[mm]||0) + (+t.amount); }
+  for (const m of monthRange(start, cm)) { run += byMonth[m] || 0; actual.push(run); }
+  const proj = []; let p = k.assets - k.ribaPending; proj.push(p);
+  for (const m of monthRange(addMonths(cm, 1), end)) { p += sum(am, () => rateFor(m)); proj.push(p); }
+  const goals = (c.goals || []).filter(g => +g.amount > 0);
+  const maxV = Math.max(1, ...actual, ...proj, ...goals.map(g => +g.amount)) * 1.08;
+  const Wd = 760, H = 230, L = 60, R = 12, T = 12, B = 28;
+  const x = i => L + (i / Math.max(1, months.length - 1)) * (Wd - L - R);
+  const y = v => T + (1 - v / maxV) * (H - T - B);
+  const step = niceStep(maxV / 4);
+  let grid = "";
+  for (let v = 0; v <= maxV; v += step) grid += `<line x1="${L}" x2="${Wd-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end">${v >= 1e5 ? bn(+(v/1e5).toFixed(1)) + " লাখ" : bn(Math.round(v/1000)) + " হা."}</text>`;
+  months.forEach((m, i) => { if (i % 6 === 0) grid += `<text x="${x(i)}" y="${H-8}" text-anchor="middle">${MONTHS[+m.slice(5,7)-1].slice(0,3)} ${bn(m.slice(2,4))}</text>`; });
+  const ai = actual.length - 1;
+  const aPath = actual.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join("");
+  const area = actual.length ? aPath + `L${x(ai)},${y(0)}L${x(0)},${y(0)}Z` : "";
+  const pPath = proj.map((v, i) => `${i ? "L" : "M"}${x(ai + i).toFixed(1)},${y(v).toFixed(1)}`).join("");
+  const gl = goals.map(g => `<line x1="${L}" x2="${Wd-R}" y1="${y(+g.amount)}" y2="${y(+g.amount)}" stroke="var(--gold)" stroke-dasharray="2 4"/><text x="${Wd-R}" y="${y(+g.amount)-4}" text-anchor="end" style="fill:var(--gold)">${esc(g.name)} · ${tk(g.amount)}</text>`).join("");
+  return `<div class="tbl-wrap"><svg viewBox="0 0 ${Wd} ${H}" width="100%" role="img" aria-label="জমার অগ্রগতি ও ভবিষ্যৎ অনুমান">${grid}${gl}
+    ${area ? `<path d="${area}" fill="var(--accent)" opacity=".12"/><path d="${aPath}" fill="none" stroke="var(--accent)" stroke-width="2.5"/>` : ""}
+    <path d="${pPath}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5 5" opacity=".7"/>
+    ${actual.length ? `<circle cx="${x(ai)}" cy="${y(actual[ai])}" r="4.5" fill="var(--accent)"/>` : ""}
+  </svg></div><p class="small muted">গাঢ় রেখা: এ পর্যন্ত জমা হওয়া চাঁদা। ভাঙা রেখা: এখন যত সদস্য ও যে হারে দিচ্ছেন, সেভাবে চললে ৩ বছরে সম্ভাব্য তহবিল।</p>`;
+}
+function goalRows(k){
+  const c = cfg(), am = activeMembers(), now = k.assets - k.ribaPending;
+  const perMonth = sum(am, () => rateFor(addMonths(curMonth(), 1)));
+  return `<div class="tbl-wrap"><table><thead><tr><th>লক্ষ্য</th><th class="r">দরকার</th><th class="r">এখন আছে</th><th class="r">শুধু চাঁদায় পৌঁছাতে</th><th class="r">আজ কিনলে জনপ্রতি এককালীন</th></tr></thead><tbody>
+  ${(c.goals||[]).map(g => { const need = Math.max(0, g.amount - now); const mo = perMonth ? Math.ceil(need / perMonth) : 0; return `<tr><td>${esc(g.name)}</td><td class="r num">${tk(g.amount)}</td><td class="r num">${tk(now)}</td><td class="r">${need === 0 ? `<span class="chip c-good">পৌঁছে গেছে</span>` : perMonth ? `${bn(mo)} মাস · ${mLabel(addMonths(curMonth(), mo))}` : "—"}</td><td class="r num">${am.length ? tk(need / am.length) : "—"}</td></tr>`; }).join("") || `<tr><td colspan="5" class="muted">সেটিংসে লক্ষ্য যোগ করুন।</td></tr>`}
+  </tbody></table></div>`;
+}
+
+function vCollect(){
+  const c = cfg(), cm = curMonth();
+  if (!S.members.length) return setupCard();
+  const months = monthRange(c.startMonth, addMonths(cm, 2));
+  const ms = S.members.slice().sort((a,b)=>(+a.order||0)-(+b.order||0));
+  const cols = `grid-template-columns: minmax(120px,1.4fr) repeat(${months.length}, minmax(62px,1fr)) minmax(90px,1fr)`;
+  const head = `<div class="grid-months small muted" style="${cols}"><div>সদস্য</div>${months.map(m => `<div style="text-align:center">${mLabel(m).replace(" ", "<br>")}</div>`).join("")}<div style="text-align:right">মোট জমা</div></div>`;
+  const rows = ms.map(m => `<div class="grid-months" style="${cols};align-items:center"><div>${esc(m.name)}<div class="small muted">${esc(walletName(m.account))}</div></div>${months.map(mo => { const st = monthStatus(m, mo); const p = paidFor(m.id, mo); return `<div class="cell ${st}" title="${mLabel(mo)}: ${tk(p)}">${st === "na" ? "—" : st === "future" ? (p ? tk(p) : "·") : tk(p)}</div>`; }).join("")}<div style="text-align:right" class="num">${tk(sum(contribs().filter(t => t.memberId === m.id), t => t.amount))}</div></div>`).join("");
+  const totals = `<div class="grid-months small" style="${cols};border-top:1px solid var(--line);padding-top:6px"><b>মাসের মোট</b>${months.map(mo => `<div style="text-align:center" class="num">${tk(sum(S.members, m => paidFor(m.id, mo)))}</div>`).join("")}<b style="text-align:right" class="num">${tk(sum(contribs(), t => t.amount))}</b></div>`;
+  return `<section class="card">
+    <div class="card-h"><h2>মাসিক চাঁদার ছক</h2><div class="row">${eb(`<button class="btn p" data-act="contrib">+ চাঁদা গ্রহণ ও রসিদ</button>`)}</div></div>
+    <p class="small muted">প্রতি মাসের ${bn(c.dueDay)} তারিখের মধ্যে জমা। বর্তমান হার: ${tk(rateFor(cm))} প্রতি জন। এক রসিদে একাধিক মাসের অগ্রিমও নেওয়া যায়।</p>
+    <div class="row small" style="margin-bottom:10px"><span class="cell paid">পরিশোধিত</span><span class="cell partial">আংশিক</span><span class="cell pending">অপেক্ষমাণ</span><span class="cell late">দেরি</span><span class="cell future">সামনে</span></div>
+    <div class="tbl-wrap"><div style="min-width:${200 + months.length * 66}px;display:flex;flex-direction:column;gap:6px">${head}${rows}${totals}</div></div>
+  </section>
+  <section class="card"><div class="card-h"><h2>রসিদসমূহ</h2><span class="muted small">যে রসিদ চান খুলে ছবি নামান বা পাঠান</span></div>${contribTable(contribs())}</section>`;
+}
+function contribTable(list){
+  if (!list.length) return `<div class="empty">কোনো রসিদ নেই।</div>`;
+  list = list.slice().sort((a,b) => (b.date||"").localeCompare(a.date||"") || b.id.localeCompare(a.id));
+  return `<div class="tbl-wrap"><table><thead><tr><th>রসিদ নং</th><th>তারিখ</th><th>সদস্য</th><th>মাস</th><th>মাধ্যম</th><th>এখন কোথায়</th><th class="r">টাকা</th><th></th></tr></thead><tbody>
+  ${list.map(t => `<tr><td class="num">${esc(t.id)}</td><td class="num">${dLabel(t.date)}</td><td>${esc(mName(t.memberId))}</td><td class="small">${(t.months||[]).map(mLabel).join(", ")}</td><td class="small">${esc(METHODS[t.method] || t.method)}${t.trxId ? `<div class="muted">${esc(t.trxId)}</div>` : ""}</td><td>${whereChip(t)}</td><td class="r num">${tk(t.amount)}</td><td class="r"><button class="btn sm" data-act="receipt" data-id="${esc(t.id)}">রসিদ</button></td></tr>`).join("")}
+  </tbody></table></div>`;
+}
+function whereChip(t){
+  if (t.to !== "custody") return `<span class="chip c-info">${esc(walletName(t.to))}</span>`;
+  if (t.depositId) { const d = S.txns.find(x => x.id === t.depositId); return `<span class="chip c-good">ব্যাংকে জমা${d ? " · " + esc(walletName(d.to)) : ""}</span>`; }
+  return `<span class="chip c-warn">হেফাজতে</span>`;
+}
+
+function vLedger(){
+  const k = calc(), u = S.ui;
+  let list = sortedTxns();
+  if (u.fType) list = list.filter(t => t.type === u.fType);
+  if (u.fMember) list = list.filter(t => t.memberId === u.fMember);
+  if (u.fWallet) list = list.filter(t => t.to === u.fWallet || t.from === u.fWallet);
+  return `<section class="tiles">
+    ${WALLETS.map(w => `<div class="tile ${w === "custody" ? (k.bal.custody ? "warn" : "") : "info"}"><div class="l">${esc(walletName(w))}</div><div class="v">${tk(k.bal[w])}</div></div>`).join("")}
+    <div class="tile ${k.balanced ? "main" : "bad"}"><div class="l">হিসাব মিলানো</div><div class="v" style="font-size:1.05rem">${k.balanced ? "মিলছে ✓" : "মিলছে না"}</div><div class="s">সম্পদ ${tk(k.assets)} = জমা ${tk(k.totalContrib)} ${k.netProfit >= 0 ? "+" : "−"} লাভ/ক্ষতি ${tk(Math.abs(k.netProfit))}${k.ribaPending ? " + সুদ " + tk(k.ribaPending) : ""}</div></div>
+  </section>
+  <section class="card">
+    <div class="card-h"><h2>খতিয়ান</h2><div class="row">${eb(`<button class="btn p" data-act="contrib">+ চাঁদা</button><button class="btn" data-act="transfer">+ ব্যাংকে জমা</button><button class="btn" data-act="expense">+ খরচ</button><button class="btn" data-act="riba">+ ব্যাংক সুদ / দান</button>`)}<button class="btn" data-act="export">ব্যাকআপ / CSV</button></div></div>
+    <div class="row" style="margin-bottom:10px">
+      <label class="f">ধরন<select id="fType"><option value="">সব</option>${Object.entries(TYPES).map(([k,v]) => `<option value="${k}" ${u.fType===k?"selected":""}>${v.l}</option>`).join("")}</select></label>
+      <label class="f">সদস্য<select id="fMember"><option value="">সব</option>${S.members.map(m => `<option value="${esc(m.id)}" ${u.fMember===m.id?"selected":""}>${esc(m.name)}</option>`).join("")}</select></label>
+      <label class="f">হিসাব<select id="fWallet"><option value="">সব</option>${WALLETS.map(w => `<option value="${w}" ${u.fWallet===w?"selected":""}>${esc(walletName(w))}</option>`).join("")}</select></label>
+    </div>
+    ${list.length ? `<div class="tbl-wrap"><table><thead><tr><th>তারিখ</th><th>ধরন</th><th>বিবরণ</th><th>প্রমাণ</th><th class="r">টাকা</th><th></th></tr></thead><tbody>
+    ${list.map(t => `<tr><td class="num small">${dLabel(t.date)}<div class="muted">${esc(t.id)}</div></td><td><span class="chip ${TYPES[t.type].c}">${TYPES[t.type].l}</span><div class="small muted">${esc(walletName(t.to || t.from))}</div></td><td class="small">${txnDesc(t)}${t.note && t.type === "contribution" ? `<div class="muted">${esc(t.note)}</div>` : ""}</td><td>${proofsHtml(t.proofs)}</td><td class="r num">${tk(t.amount)}</td><td class="r"><div class="row" style="justify-content:flex-end">${t.type === "contribution" ? `<button class="btn sm" data-act="receipt" data-id="${esc(t.id)}">রসিদ</button>` : ""}${eb(`<button class="btn sm" data-act="addproof" data-id="${esc(t.id)}">প্রমাণ</button><button class="btn sm danger" data-act="del" data-id="${esc(t.id)}">মুছুন</button>`)}</div></td></tr>`).join("")}
+    </tbody></table></div>` : `<div class="empty">এই ফিল্টারে কোনো লেনদেন নেই।</div>`}
+  </section>
+  <section class="card"><div class="card-h"><h2>পরিবর্তনের রেকর্ড</h2><a class="small" href="${esc(GH.historyUrl())}" target="_blank" rel="noopener">GitHub-এ প্রতিটি পরিবর্তনের ইতিহাস</a></div>
+  <p class="small muted">প্রতিটি সংরক্ষণ GitHub-এ আলাদা কমিট হিসেবে তারিখ-সময়সহ থেকে যায়, যা কেউ গোপনে বদলাতে পারে না। কোনো লেনদেন মুছলে তার কারণও এখানে থাকে।</p>
+  ${S.audit.length ? `<div class="tbl-wrap"><table><tbody>${S.audit.slice().sort((a,b)=>(b.at||"").localeCompare(a.at||"")).map(a => `<tr><td class="small num">${dLabel((a.at||"").slice(0,10))}</td><td class="small">মুছে ফেলা: <b>${esc(a.data && TYPES[a.data.type] ? TYPES[a.data.type].l : "")}</b> ${esc(a.data ? a.data.id : "")} · ${tk(a.data ? a.data.amount : 0)}</td><td class="small">কারণ: ${esc(a.reason)}</td></tr>`).join("")}</tbody></table></div>` : `<div class="muted small">কোনো লেনদেন মোছা হয়নি।</div>`}</section>`;
+}
+
+function vLoans(){
+  const k = calc(), c = cfg();
+  return `<section class="card">
+    <div class="card-h"><h2>করজে হাসানা (সুদমুক্ত ঋণ)</h2>${eb(`<button class="btn p" data-act="loan">+ নতুন ঋণ</button>`)}</div>
+    <p class="small muted">সদস্য যত টাকা নেবেন ঠিক ততই ফেরত দেবেন, অতিরিক্ত কিছু নয়। একজন সর্বোচ্চ নিজের মোট জমার ${bn(c.loanMaxPct)}% পর্যন্ত নিতে পারবেন (সেটিংসে বদলানো যায়)। এখন হাতে আছে ${tk(k.cash - k.ribaPending)}।</p>
+    ${S.loans.length ? `<div class="tbl-wrap"><table><thead><tr><th>সদস্য</th><th>নেওয়ার তারিখ</th><th>ফেরতের তারিখ</th><th>উদ্দেশ্য</th><th class="r">ঋণ</th><th class="r">বাকি</th><th></th></tr></thead><tbody>
+    ${S.loans.slice().sort((a,b)=>(b.date||"").localeCompare(a.date||"")).map(l => { const o = loanOutstanding(l); const late = o > 0 && l.dueDate && l.dueDate < todayISO(); const amt = sum(S.txns.filter(t => t.type === "loan_disburse" && t.loanId === l.id), t => t.amount); return `<tr><td>${esc(mName(l.memberId))}${l.witness ? `<div class="small muted">সাক্ষী: ${esc(l.witness)}</div>` : ""}</td><td class="num">${dLabel(l.date)}</td><td class="num">${dLabel(l.dueDate)} ${late ? `<span class="chip c-bad">মেয়াদ পার</span>` : ""}</td><td class="small">${esc(l.purpose)}<div class="muted">${esc(l.plan || "")}</div></td><td class="r num">${tk(amt)}</td><td class="r num">${o ? tk(o) : `<span class="chip c-good">পরিশোধিত</span>`}</td><td class="r">${eb(o ? `<button class="btn sm" data-act="repay" data-id="${esc(l.id)}">কিস্তি গ্রহণ</button>` : "")}</td></tr>`; }).join("")}
+    </tbody></table></div>` : `<div class="empty">এখনো কোনো ঋণ দেওয়া হয়নি।</div>`}
+  </section>`;
+}
+
+const MODELS = { mudaraba: "মুদারাবা (আমরা পুঁজি, অন্যজন শ্রম; লাভ চুক্তিমতো ভাগ)", musharaka: "মুশারাকা (যৌথ পুঁজি ও অংশীদারি)", own: "নিজস্ব ব্যবসা", asset: "জমি / সম্পদ ক্রয়", murabaha: "ক্রয়-বিক্রয় (মুরাবাহা)", other: "অন্যান্য" };
+function vInvest(){
+  return `<section class="card">
+    <div class="card-h"><h2>বিনিয়োগ</h2>${eb(`<button class="btn p" data-act="invest">+ নতুন বিনিয়োগ</button>`)}</div>
+    <p class="small muted">প্রতিটি বিনিয়োগে লাভ-ক্ষতি দুটোই ভাগ হবে; নির্দিষ্ট নিশ্চিত লাভ দাবি করা হবে না। বিনিয়োগের আগে সভায় অন্তত ${bn(cfg().approvalNeeded)} জনের সম্মতি লাগবে।</p>
+    ${S.invs.length ? `<div class="members">${S.invs.slice().sort((a,b)=>(b.startDate||"").localeCompare(a.startDate||"")).map(i => { const c = invCapital(i); const closed = i.status === "closed"; return `<article class="card mcard">
+      <div class="row" style="justify-content:space-between"><h3>${esc(i.name)}</h3><span class="chip ${closed ? "c-muted" : "c-acc"}">${closed ? "বন্ধ" : "চলমান"}</span></div>
+      <div class="small muted">${esc(i.sector || "")} · ${esc(MODELS[i.model] || "")}</div>
+      <dl class="kv"><dt>শুরু</dt><dd>${dLabel(i.startDate)}</dd><dt>অংশীদার/দায়িত্বে</dt><dd>${esc(i.partner || "—")}</dd><dt>লাভ ভাগের চুক্তি</dt><dd>${esc(i.ratio || "—")}</dd><dt>মোট দেওয়া</dt><dd>${tk(c.out)}</dd><dt>মূলধন ফেরত</dt><dd>${tk(c.back)}</dd><dt>লাভ পাওয়া</dt><dd class="c-good">${tk(c.profit)}</dd>${i.writeOff ? `<dt>ক্ষতি</dt><dd class="c-bad">${tk(i.writeOff)}</dd>` : ""}<dt>এখনও খাটছে</dt><dd><b>${tk(c.active)}</b></dd></dl>
+      ${i.notes ? `<div class="small">${esc(i.notes)}</div>` : ""}${proofsHtml(i.proofs)}
+      ${eb(closed ? "" : `<div class="row"><button class="btn sm" data-act="invout" data-id="${esc(i.id)}">টাকা দিন</button><button class="btn sm" data-act="invin" data-id="${esc(i.id)}">ফেরত/লাভ গ্রহণ</button><button class="btn sm" data-act="invclose" data-id="${esc(i.id)}">বন্ধ করুন</button></div>`)}
+    </article>`; }).join("")}</div>` : `<div class="empty">কোনো বিনিয়োগ এখনো নেই। খাত ঠিক হলে প্রস্তাবটি আগে "সভা ও সিদ্ধান্ত" ট্যাবে পাস করিয়ে তারপর এখানে যোগ করুন।</div>`}
+  </section>`;
+}
+
+function vMembers(){
+  const k = calc();
+  return `<section class="card"><div class="card-h"><h2>সদস্য ও প্রত্যেকের অংশ</h2>${eb(`<button class="btn p" data-act="member">+ সদস্য যোগ</button>`)}</div>
+  ${rolesBoard()}
+  <p class="small muted" style="margin-top:14px">প্রত্যেকের অংশ = নিজের মোট জমা + মোট জমার অনুপাতে নিট লাভ/ক্ষতি। নেওয়া ঋণ আলাদা দেখানো হয়েছে।</p>
+  ${S.members.length ? `<div class="members">${S.members.slice().sort((a,b)=>(+a.order||0)-(+b.order||0)).map(m => { const s = memberShare(m, k); return `<article class="card mcard">
+    <div class="row" style="justify-content:space-between"><h3>${esc(m.name)}</h3><span class="chip ${m.status === "left" ? "c-muted" : roleInfo(m.role) ? "c-acc" : "c-muted"}">${m.status === "left" ? "সদস্যপদ ত্যাগ" : esc(roleName(m.role))}</span></div>
+    <dl class="kv"><dt>যৌথ হিসাব</dt><dd>${esc(walletName(m.account))}</dd><dt>মোবাইল</dt><dd>${esc(bn(m.phone || "—"))}</dd><dt>বিকাশ/নগদ</dt><dd>${esc(bn(m.mfs || "—"))}</dd><dt>নমিনি</dt><dd>${esc(m.nominee || "—")}${m.nomineeRel ? " (" + esc(m.nomineeRel) + ")" : ""}</dd><dt>মোট জমা</dt><dd>${tk(s.contributed)}</dd><dt>লাভ/ক্ষতির অংশ</dt><dd>${tk(s.profitShare)}</dd><dt>তহবিলে অংশ</dt><dd><b>${tk(s.value)}</b> · ${bn((s.pct*100).toFixed(1))}%</dd>${s.loan ? `<dt>নেওয়া ঋণ বাকি</dt><dd class="c-warn">${tk(s.loan)}</dd>` : ""}</dl>
+    <div class="bar"><i style="width:${(s.pct*100).toFixed(1)}%"></i></div>
+    <div class="row"><button class="btn sm" data-act="statement" data-id="${esc(m.id)}">হিসাব বিবরণী</button>${eb(`<button class="btn sm" data-act="member" data-id="${esc(m.id)}">সম্পাদনা</button>`)}</div>
+  </article>`; }).join("")}</div>` : `<div class="empty">এখনো কোনো সদস্য নেই।</div>`}
+  </section>`;
+}
+
+function rolesBoard(){
+  const roles = cfg().roles || [];
+  if (!roles.length) return "";
+  return `<h3 style="margin-bottom:8px">পদ ও দায়িত্ব</h3><div class="tbl-wrap"><table><thead><tr><th>পদ</th><th>দায়িত্বপ্রাপ্ত</th><th>মূল দায়িত্ব</th></tr></thead><tbody>${roles.map(x => { const holders = S.members.filter(m => m.status !== "left" && roleOf(m.role) === x.id); return `<tr><td><b>${esc(x.bn)}</b><div class="small muted">${esc(x.en || "")}</div></td><td>${holders.length ? holders.map(m => esc(m.name)).join(", ") : `<span class="chip c-warn">শূন্য</span>`}</td><td class="small">${esc(x.duty || "")}</td></tr>`; }).join("")}</tbody></table></div>${eb(`<p class="small muted">পদের নাম ও দায়িত্ব বদলাতে বা নতুন পদ যোগ করতে <a href="#settings">সেটিংস</a> দেখুন।</p>`)}`;
+}
+const VOTE_L = { yes: "হ্যাঁ", no: "না", abstain: "বিরত", absent: "অনুপস্থিত" };
+function vDecisions(){
+  const c = cfg();
+  return `<section class="card"><div class="card-h"><h2>সভা ও সিদ্ধান্ত</h2>${eb(`<button class="btn p" data-act="decision">+ সিদ্ধান্ত লিখুন</button>`)}</div>
+  <p class="small muted">বিনিয়োগ, ঋণ, চাঁদার হার বদল বা নীতিমালা সংশোধনের মতো সিদ্ধান্ত কারণ ও ভোটসহ লিখে রাখুন। ভবিষ্যতে প্রতিষ্ঠান গঠনের সময় এটাই সভার কার্যবিবরণী হবে। পাস হতে ${bn(c.approvalNeeded)} জনের "হ্যাঁ" লাগে।</p>
+  ${S.decisions.length ? S.decisions.slice().sort((a,b)=>(b.date||"").localeCompare(a.date||"")).map(d => { const yes = Object.values(d.votes||{}).filter(v => v === "yes").length; const pass = yes >= (+d.needed || c.approvalNeeded); return `<article style="border-top:1px solid var(--line);padding:12px 0;display:flex;flex-direction:column;gap:6px">
+    <div class="row" style="justify-content:space-between"><h3>${esc(d.title)}</h3><span class="chip ${pass ? "c-good" : "c-bad"}">${pass ? "গৃহীত" : "গৃহীত হয়নি"} · হ্যাঁ ${bn(yes)}</span></div>
+    <div class="small muted">${dLabel(d.date)}${d.place ? " · " + esc(d.place) : ""}</div>
+    <div style="white-space:pre-wrap;max-width:70ch">${esc(d.detail)}</div>
+    <div class="row small">${Object.entries(d.votes||{}).map(([id, v]) => `<span class="chip ${v === "yes" ? "c-good" : v === "no" ? "c-bad" : "c-muted"}">${esc(mName(id))}: ${VOTE_L[v] || v}</span>`).join("")}</div>
+    ${eb(`<div><button class="btn sm danger" data-act="deldec" data-id="${esc(d.id)}">মুছুন</button></div>`)}
+  </article>`; }).join("") : `<div class="empty">কোনো সিদ্ধান্ত লেখা হয়নি। ডিসেম্বরে ব্যাংকে যাওয়ার দিনই প্রথম সভা করে নীতিমালাটি পাস করিয়ে নিতে পারেন।</div>`}
+  </section>`;
+}
+
+const DEFAULT_BYLAWS = `## ১. নাম ও উদ্দেশ্য
+- পাঁচ বন্ধুর মাসিক সঞ্চয় একত্র করে সুদমুক্ত উপায়ে বিনিয়োগ ও নিজেদের প্রয়োজনে করজে হাসানা দেওয়া।
+- ভবিষ্যতে প্রয়োজনে অংশীদারি প্রতিষ্ঠান বা কোম্পানিতে রূপ দেওয়া।
+## ২. সদস্যপদ
+- প্রতিষ্ঠাতা সদস্য ৫ জন। নতুন সদস্য নেওয়া হবে শুধু সবার সম্মতিতে।
+- প্রত্যেক সদস্য একজন নমিনি দেবেন।
+## ৩. মাসিক চাঁদা
+- প্রত্যেকে প্রতি মাসে ২,০০০ টাকা, মাসের ১২ তারিখের মধ্যে জমা দেবেন। অগ্রিম দেওয়া যাবে।
+- প্রতিটি জমার জন্য অনলাইন রসিদ দেওয়া হবে; ক্যাশ বা বিকাশ যেভাবেই দেওয়া হোক।
+- দেরিতে দিলে আর্থিক জরিমানা নেওয়া হবে না (সুদের সাদৃশ্য এড়াতে)। পরপর ৩ মাস বকেয়া থাকলে সভায় আলোচনা হবে।
+- চাঁদার হার বাড়ানো বা কমানো হবে সভার সিদ্ধান্তে।
+## ৪. টাকার হেফাজত
+- টাকা থাকবে সোনালী ব্যাংকের দুটি যৌথ হিসাবে (৩ জন ও ২ জনের নামে)।
+- প্রধান অর্থ কর্মকর্তার কাছে ক্যাশ বা বিকাশে আসা টাকা প্রতি মাসের ২০ তারিখের মধ্যে যৌথ হিসাবে জমা হবে এবং জমা স্লিপ বা ট্রান্সফারের প্রমাণ এই সিস্টেমে যুক্ত হবে।
+- হেফাজতের টাকা কেউ ব্যক্তিগত কাজে খরচ করতে পারবেন না।
+- যৌথ হিসাব থেকে টাকা তুলতে অন্তত দুজন হিসাবধারীর স্বাক্ষর লাগবে।
+## ৫. সুদমুক্ত নীতি
+- সুদভিত্তিক সঞ্চয়, এফডিআর বা সুদে ঋণ নেওয়া-দেওয়া হবে না।
+- সম্ভব হলে সুদ দেয় না এমন চলতি হিসাব বা ইসলামী ব্যাংকিং সেবার হিসাব নেওয়া হবে।
+- কোনো কারণে ব্যাংক সুদ দিলে তা আলাদা লেখা থাকবে, সদস্যদের অংশে যোগ হবে না, এবং সওয়াবের নিয়ত ছাড়া দান করে দেওয়া হবে।
+## ৬. বিনিয়োগ
+- প্রস্তাব লিখিতভাবে সভায় আসবে; অন্তত ৪ জনের সম্মতিতে পাস হবে। জমি বা বড় সম্পদ কেনায় ৫ জনেরই সম্মতি লাগবে।
+- মুদারাবা, মুশারাকা, নিজস্ব ব্যবসা বা সম্পদ কেনা—সব ক্ষেত্রে লাভ-ক্ষতি দুটোই ভাগ হবে।
+- একটি বিনিয়োগে মোট তহবিলের অর্ধেকের বেশি দেওয়া হবে না (জমি কেনা ছাড়া)।
+- প্রতিটি বিনিয়োগের লিখিত চুক্তি থাকবে।
+## ৭. করজে হাসানা (সদস্যদের সুদমুক্ত ঋণ)
+- তহবিলের একটি অংশ ঋণের জন্য রাখা হবে। একজন সর্বোচ্চ নিজের মোট জমার সমপরিমাণ নিতে পারবেন।
+- লিখিত ফেরতসূচি থাকবে; নেওয়া টাকার বেশি কিছু ফেরত নেওয়া হবে না।
+- অন্তত ৩ জনের সম্মতিতে ঋণ দেওয়া হবে।
+## ৮. হিসাব ও স্বচ্ছতা
+- সব লেনদেন প্রমাণসহ এই সিস্টেমে লেখা হবে; সবাই যেকোনো সময় দেখতে পারবেন।
+- প্রতি মাসের ১৫ তারিখের মধ্যে মাসিক রিপোর্ট গ্রুপে দেওয়া হবে। বছরে একবার সবাই মিলে ব্যাংক স্টেটমেন্টের সঙ্গে হিসাব মেলানো হবে।
+## ৯. সদস্যপদ ত্যাগ ও মৃত্যু
+- ৩ মাস আগে জানিয়ে সদস্যপদ ছাড়া যাবে। নিজের জমা ও লাভ-ক্ষতির অংশ নগদ থাকা সাপেক্ষে ৬ মাসের মধ্যে ফেরত দেওয়া হবে।
+- কোনো সদস্য মারা গেলে তার অংশ নমিনি বা শরিয়াহ অনুযায়ী ওয়ারিশরা পাবেন।
+## ১০. পদ ও দায়িত্ব
+- পাঁচটি পদ: চেয়ারম্যান, প্রধান অর্থ কর্মকর্তা, প্রধান বিনিয়োগ কর্মকর্তা, কোম্পানি সচিব এবং প্রধান ঝুঁকি ও কমপ্লায়েন্স কর্মকর্তা। প্রত্যেকে একটি পদে থাকবেন।
+- চেয়ারম্যান ও প্রধান অর্থ কর্মকর্তা, এবং প্রধান অর্থ কর্মকর্তা ও প্রধান ঝুঁকি ও কমপ্লায়েন্স কর্মকর্তা একই ব্যক্তি হবেন না।
+- পদের মেয়াদ এক বছর; বার্ষিক সাধারণ সভায় নির্বাচন।
+- বিস্তারিত নিয়ম আলাদা গঠনতন্ত্রে (ওয়ার্ড ফাইল) রয়েছে; এখানে তার সারসংক্ষেপ।
+## ১১. বিরোধ ও সংশোধন
+- মতবিরোধ আলোচনায় মীমাংসা হবে। নীতিমালা সংশোধন হবে ৫ জনের সম্মতিতে।`;
+function mdToHtml(t){
+  const out = []; let inList = false;
+  for (const line of String(t).split("\n")) {
+    if (line.startsWith("- ")) { if (!inList) { out.push("<ul>"); inList = true; } out.push("<li>" + esc(line.slice(2)) + "</li>"); continue; }
+    if (inList) { out.push("</ul>"); inList = false; }
+    if (line.startsWith("## ")) out.push("<h2>" + esc(line.slice(3)) + "</h2>");
+    else if (line.trim()) out.push("<p>" + esc(line) + "</p>");
+  }
+  if (inList) out.push("</ul>");
+  return out.join("");
+}
+function vRules(){
+  const text = (S.bylaws && S.bylaws.text) || DEFAULT_BYLAWS;
+  const c = cfg(); const opened = c.accounts.bankA.opened || c.accounts.bankB.opened;
+  const stepsData = [
+    ["নভেম্বর–ডিসেম্বর ২০২৬", "প্রধান অর্থ কর্মকর্তার হেফাজতে জমা", "প্রধান অর্থ কর্মকর্তা টাকা গ্রহণ করে প্রত্যেককে অনলাইন রসিদ দেবেন। সব টাকা খতিয়ানে 'হেফাজতে' হিসেবে থাকবে।", !opened],
+    ["ডিসেম্বরের শেষ", "যৌথ হিসাব খোলা ও প্রথম সভা", "৫ জন একসাথে ব্যাংকে গিয়ে দুটি যৌথ হিসাব খুলবেন। একই দিনে নীতিমালা পড়ে সবাই সই করবেন এবং সেটি 'সভা ও সিদ্ধান্ত'-এ লিখে রাখবেন। হেফাজতের টাকা ব্যাংকে জমা দিয়ে স্লিপ যুক্ত করবেন।", false],
+    ["২০২৭", "নিয়মিত জমা ও খাত বাছাই", "প্রতি মাসে চাঁদা, ১৫ তারিখে মাসিক রিপোর্ট। বছরের মধ্যে ২–৩টি সম্ভাব্য বিনিয়োগ খাত যাচাই করে লিখিত প্রস্তাব তৈরি।", false],
+    ["২০২৮", "প্রথম বিনিয়োগ ও ঋণ তহবিল", "সভায় পাস হওয়া খাতে প্রথম বিনিয়োগ, লিখিত চুক্তিসহ। তহবিলের একটি অংশ করজে হাসানার জন্য আলাদা রাখা।", false],
+    ["২০২৮–২০৩০", "লিখিত অংশীদারি চুক্তি", "বিনিয়োগ ও সম্পদ বাড়লে স্ট্যাম্পে অংশীদারি চুক্তিপত্র করে নোটারি করানো, যাতে মালিকানা ও লাভ ভাগের নিয়ম আইনগতভাবে লেখা থাকে।", false],
+    ["৫ বছর পর", "প্রতিষ্ঠান বা কোম্পানি গঠন", "ব্যবসার ধরন অনুযায়ী নিবন্ধিত অংশীদারি ফার্ম বা প্রাইভেট লিমিটেড কোম্পানি (যৌথ মূলধনী কোম্পানি ও ফার্মসমূহের পরিদপ্তর, RJSC), ট্রেড লাইসেন্স, TIN এবং প্রতিষ্ঠানের নামে ব্যাংক হিসাব। এই খতিয়ান ও সিদ্ধান্তের রেকর্ড তখন প্রারম্ভিক হিসাব হিসেবে কাজে লাগবে। গঠনের আগে একজন আইনজীবী বা হিসাবরক্ষকের পরামর্শ নিন।", false]
+  ];
+  return `<div class="grid2">
+  <section class="card doc"><div class="card-h"><h2 style="margin:0">নীতিমালার সারসংক্ষেপ</h2>${eb(`<button class="btn" data-act="bylaws">সম্পাদনা</button>`)}</div>
+  <p class="small muted">এটি আলোচনার জন্য খসড়া। ৫ জনে মিলে পড়ে, দরকার মতো বদলে, সবাই সই করে চূড়ান্ত করুন।</p>${mdToHtml(text)}</section>
+  <section class="card"><h2 style="margin-bottom:12px">সাংগঠনিক রূপ দেওয়ার রোডম্যাপ</h2><div class="steps">${stepsData.map(([when, t, d, now], i) => `<div class="step ${now ? "now" : ""}"><b class="n">${bn(i+1)}</b><div><div class="small muted">${when}</div><b>${t}</b><div class="small">${d}</div></div></div>`).join("")}</div></section>
+  </div>`;
+}
+
+function vSettings(){
+  const c = cfg();
+  const conn = `<section class="card"><h2>সংযোগ ও নিরাপত্তা</h2>
+    <dl class="kv" style="max-width:560px;margin:10px 0"><dt>রিপোজিটরি</dt><dd><code>${esc(GH.owner)}/${esc(GH.repo)}</code></dd><dt>এই ডিভাইসে</dt><dd>${S.canEdit ? "অ্যাডমিন হিসেবে লগইন" : "শুধু দেখা"}</dd></dl>
+    <div class="row"><a class="btn" href="${esc(GH.historyUrl())}" target="_blank" rel="noopener">পরিবর্তনের ইতিহাস (GitHub)</a><button class="btn" data-act="export">ব্যাকআপ / CSV</button>${eb(`<button class="btn" data-act="import">ব্যাকআপ থেকে ফেরত আনুন</button><button class="btn" data-act="chpass">পাসফ্রেজ বদলান</button>`)}<button class="btn" data-act="changeRepo">অন্য রিপোজিটরি</button></div></section>`;
+  if (!S.canEdit) return `<section class="card"><h2>নিয়মসমূহ</h2><dl class="kv" style="max-width:480px;margin-top:10px"><dt>শুরু</dt><dd>${mLabel(c.startMonth)}</dd><dt>জমার শেষ তারিখ</dt><dd>প্রতি মাসের ${bn(c.dueDay)} তারিখ</dd><dt>চাঁদার হার</dt><dd>${(c.rates||[]).map(r => mLabel(r.from) + " থেকে " + tk(r.amount)).join("; ")}</dd><dt>রসিদ গ্রহণকারী</dt><dd>${esc(c.managerName || "—")}</dd></dl></section>${conn}`;
+  const acc = id => { const a = c.accounts[id]; return `<fieldset class="card full" style="display:grid;grid-template-columns:1fr 1fr;gap:8px 12px"><legend class="small muted">${id === "bankA" ? "প্রথম যৌথ হিসাব (৩ জন)" : "দ্বিতীয় যৌথ হিসাব (২ জন)"}</legend>
+    <label class="f">নাম<input id="s_${id}_label" value="${esc(a.label)}"></label><label class="f">ব্যাংক<input id="s_${id}_bank" value="${esc(a.bank)}"></label>
+    <label class="f">শাখা<input id="s_${id}_branch" value="${esc(a.branch)}"></label><label class="f">হিসাব নম্বরের শেষ ৪ সংখ্যা<input id="s_${id}_last4" maxlength="4" value="${esc(a.last4)}"></label>
+    <label class="f">খোলার তারিখ<input type="date" id="s_${id}_opened" value="${esc(a.opened)}"></label></fieldset>`; };
+  return `<section class="card"><div class="card-h"><h2>সেটিংস</h2></div>
+  <div class="form">
+    <label class="f">প্রতিষ্ঠানের নাম (বাংলা)<input id="s_name" value="${esc(c.groupName)}"></label>
+    <label class="f">প্রতিষ্ঠানের নাম (ইংরেজি)<input id="s_nameEn" value="${esc(c.groupNameEn || "")}"></label>
+    <label class="f full">হেফাজতের হিসাবের নাম (যার কাছে নগদ/বিকাশের টাকা থাকে)<input id="s_custody" value="${esc(c.custodyLabel || "")}"></label>
+    <label class="f">রসিদে গ্রহণকারীর নাম<input id="s_mgr" value="${esc(c.managerName)}"></label>
+    <label class="f">শুরুর মাস<input type="month" id="s_start" value="${esc(c.startMonth)}"></label>
+    <label class="f">চাঁদা জমার শেষ তারিখ (মাসের)<input type="number" min="1" max="28" id="s_due" value="${c.dueDay}"></label>
+    <label class="f">ব্যাংকে জমার শেষ তারিখ (মাসের)<input type="number" min="1" max="28" id="s_dep" value="${c.depositByDay}"></label>
+    <label class="f">সিদ্ধান্ত পাসে কত জনের "হ্যাঁ" লাগবে<input type="number" min="1" max="10" id="s_appr" value="${c.approvalNeeded}"></label>
+    <label class="f">ঋণসীমা (নিজের জমার কত %)<input type="number" min="0" max="500" id="s_loan" value="${c.loanMaxPct}"></label>
+    <label class="f full">চাঁদার হার (প্রতি লাইনে: মাস টাকা, যেমন 2026-11 2000)<textarea id="s_rates">${(c.rates||[]).map(r => r.from + " " + r.amount).join("\n")}</textarea></label>
+    <label class="f full">লক্ষ্য (প্রতি লাইনে: নাম | টাকা)<textarea id="s_goals">${(c.goals||[]).map(g => g.name + " | " + g.amount).join("\n")}</textarea></label>
+    ${acc("bankA")}${acc("bankB")}
+    <fieldset class="card full" style="display:flex;flex-direction:column;gap:8px"><legend class="small muted">পদসমূহ (নাম বদলানো যাবে; বাংলা নাম খালি রাখলে পদটি বাদ যাবে)</legend>
+    ${(c.roles || []).concat([{ id: "", bn: "", en: "", duty: "" }, { id: "", bn: "", en: "", duty: "" }]).map((x, i) => `<div class="form" data-role-row="${i}" data-role-id="${esc(x.id)}" style="grid-template-columns:1fr 1fr 2fr"><label class="f">বাংলা নাম<input class="r_bn" value="${esc(x.bn)}"></label><label class="f">ইংরেজি নাম<input class="r_en" value="${esc(x.en)}"></label><label class="f">মূল দায়িত্ব<input class="r_duty" value="${esc(x.duty)}"></label></div>`).join("")}
+    </fieldset>
+  </div>
+  <div class="row" style="margin-top:12px"><button class="btn p" data-act="savecfg">সেটিংস সংরক্ষণ</button></div>
+  </section>${conn}`;
+}
+
+/* ---------- Modal + forms ---------- */
+const modal = document.getElementById("modal");
+function openModal(html, wide){ modal.innerHTML = `<div class="dlg ${wide ? "wide" : ""}">${html}</div>`; modal.classList.add("open"); const f = modal.querySelector("input,select,textarea"); if (f) f.focus(); }
+function closeModal(){ modal.classList.remove("open"); modal.innerHTML = ""; if (location.hash.startsWith("#rcpt-")) history.replaceState(null, "", "#" + TAB); }
+modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && modal.classList.contains("open")) closeModal(); });
+function toast(msg){ const d = document.createElement("div"); d.className = "toast"; d.textContent = msg; document.body.appendChild(d); setTimeout(() => d.remove(), 3600); }
+const val = id => { const el = document.getElementById(id); return el ? el.value.trim() : ""; };
+const dlgHead = t => `<div class="row" style="justify-content:space-between"><h2>${t}</h2><button class="btn sm" data-act="close" aria-label="বন্ধ করুন">✕</button></div>`;
+const memberOpts = sel => activeMembers().map(m => `<option value="${esc(m.id)}" ${m.id === sel ? "selected" : ""}>${esc(m.name)}</option>`).join("");
+const walletOpts = (sel, only) => (only || WALLETS).map(w => `<option value="${w}" ${w === sel ? "selected" : ""}>${esc(walletName(w))}</option>`).join("");
+const proofInput = () => `<label class="f full">প্রমাণ (স্ক্রিনশট, স্লিপের ছবি বা ৩ MB পর্যন্ত PDF)<input type="file" id="f_proof" accept="image/*,application/pdf" multiple></label>`;
+function errText(e){
+  if (!e) return "অজানা সমস্যা";
+  if (e.status === 401) return "GitHub টোকেন কাজ করছে না বা মেয়াদ শেষ। নতুন টোকেন দিয়ে আবার লগইন করুন।";
+  if (e.status === 403) return "GitHub অনুমতি দেয়নি বা কিছুক্ষণের জন্য সীমা পূর্ণ। একটু পরে আবার চেষ্টা করুন।";
+  if (e.status === 404) return "রিপোজিটরি পাওয়া যায়নি। নাম ও টোকেনের অনুমতি দেখুন।";
+  if (e.conflict) return "অন্য ডিভাইস থেকে একই সময়ে পরিবর্তন হয়েছে। রিফ্রেশ করে আবার চেষ্টা করুন।";
+  if (e.name === "TypeError") return "ইন্টারনেট সংযোগ পাওয়া যাচ্ছে না।";
+  return e.message || String(e);
+}
+async function guarded(btn, fn){
+  btn.disabled = true; const old = btn.textContent; btn.textContent = "সংরক্ষণ হচ্ছে…";
+  try { await fn(); } catch (e) { console.error(e); toast("সংরক্ষণ হয়নি: " + errText(e)); }
+  if (btn.isConnected) { btn.disabled = false; btn.textContent = old; }
+}
+async function compressImage(file){
+  const bmp = await createImageBitmap(file);
+  const s = Math.min(1, 1400 / Math.max(bmp.width, bmp.height));
+  const c = document.createElement("canvas"); c.width = Math.round(bmp.width * s); c.height = Math.round(bmp.height * s);
+  c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
+  const blob = await new Promise(r => c.toBlob(r, "image/jpeg", 0.8));
+  return new Uint8Array(await blob.arrayBuffer());
+}
+/* Each proof file is encrypted and stored as its own file: data/proofs/<id>.enc */
+async function uploadProofs(){
+  const el = document.getElementById("f_proof"); if (!el || !el.files.length) return [];
+  const out = [];
+  for (const f of el.files) {
+    let bytes, type = f.type || "application/octet-stream", name = f.name;
+    if (type.startsWith("image/")) { bytes = await compressImage(f); type = "image/jpeg"; }
+    else { if (f.size > 3 * 1024 * 1024) throw new Error(`${f.name} ৩ MB-এর বেশি বড়`); bytes = new Uint8Array(await f.arrayBuffer()); }
+    const id = genId("P"), path = PROOF_DIR + id + ".enc";
+    const blob = await encBytes(KEY, bytes);
+    await GH.put(path, JSON.stringify({ app: APP_ID, v: 1, type, iv: blob.iv, ct: blob.ct }), null, "প্রমাণ যুক্ত: " + name);
+    out.push({ id, path, name, type });
+  }
+  return out;
+}
+const proofCache = {};
+async function viewProof(b){
+  const path = b.dataset.path, name = b.dataset.name;
+  openModal(`${dlgHead("প্রমাণ: " + esc(name))}<div class="loading">খোলা হচ্ছে…</div>`, true);
+  try {
+    if (!proofCache[path]) {
+      const r = await GH.getText(path); if (r.text === null) throw new Error("ফাইলটি পাওয়া যায়নি");
+      const o = JSON.parse(r.text);
+      proofCache[path] = URL.createObjectURL(new Blob([await decBytes(KEY, o)], { type: o.type }));
+    }
+    const url = proofCache[path], isImg = (b.dataset.type || "").startsWith("image/");
+    modal.querySelector(".dlg").innerHTML = `${dlgHead("প্রমাণ: " + esc(name))}${isImg ? `<img class="receipt-img" src="${url}" alt="প্রমাণ: ${esc(name)}">` : `<p>PDF ফাইল।</p>`}<div class="row"><a class="btn p" href="${url}" download="${esc(name)}">ডাউনলোড</a>${isImg ? "" : `<a class="btn" href="${url}" target="_blank" rel="noopener">নতুন ট্যাবে খুলুন</a>`}</div>`;
+  } catch (e) { modal.querySelector(".dlg").innerHTML = `${dlgHead("প্রমাণ")}<p class="c-bad">খোলা যায়নি: ${esc(errText(e))}</p>`; }
+}
+
+function formContrib(memberId){
+  const m0 = memberId || (activeMembers()[0] || {}).id;
+  openModal(`${dlgHead("চাঁদা গ্রহণ ও রসিদ")}
+  <div class="form">
+    <label class="f">সদস্য<select id="f_member">${memberOpts(m0)}</select></label>
+    <label class="f">টাকা পাওয়ার তারিখ<input type="date" id="f_date" value="${todayISO()}"></label>
+    <div class="f full"><span class="small muted">কোন মাসের চাঁদা</span><div class="checks" id="f_months"></div></div>
+    <label class="f">মোট টাকা<input type="number" min="1" id="f_amount"></label>
+    <label class="f">মাধ্যম<select id="f_method">${Object.entries(METHODS).map(([k,v]) => `<option value="${k}">${v}</option>`).join("")}</select></label>
+    <label class="f">TrxID / রেফারেন্স<input id="f_trx" placeholder="বিকাশ বা ব্যাংকের লেনদেন নম্বর"></label>
+    <label class="f">প্রেরকের নম্বর<input id="f_sender" placeholder="যে নম্বর থেকে পাঠিয়েছেন"></label>
+    <label class="f full">টাকা এখন কোথায়<select id="f_to">${walletOpts("custody")}</select></label>
+    ${proofInput()}
+    <label class="f full">নোট<input id="f_note"></label>
+  </div>
+  <div class="row"><button class="btn p" data-act="saveContrib">সংরক্ষণ ও রসিদ তৈরি</button><button class="btn" data-act="close">বাতিল</button></div>`);
+  const updAmt = () => { const m = val("f_member"); const ms = [...document.querySelectorAll("#f_months input:checked")].map(i => i.value); document.getElementById("f_amount").value = sum(ms, mo => rateFor(mo) - paidFor(m, mo)) || ""; };
+  const fillMonths = () => {
+    const m = memberById(val("f_member")); if (!m) return;
+    const list = monthRange(m.joinMonth || cfg().startMonth, addMonths(curMonth(), 6)).filter(mo => paidFor(m.id, mo) < rateFor(mo));
+    document.getElementById("f_months").innerHTML = list.slice(0, 12).map((mo, i) => `<label><input type="checkbox" value="${mo}" ${i === 0 ? "checked" : ""}> ${mLabel(mo)}${paidFor(m.id, mo) ? " (বাকি " + tk(rateFor(mo) - paidFor(m.id, mo)) + ")" : ""}</label>`).join("") || `<span class="small muted">সামনের ৬ মাস পর্যন্ত সব পরিশোধিত।</span>`;
+    updAmt();
+  };
+  document.getElementById("f_member").addEventListener("change", fillMonths);
+  document.getElementById("f_months").addEventListener("change", updAmt);
+  document.getElementById("f_method").addEventListener("change", e => { const m = memberById(val("f_member")); document.getElementById("f_to").value = e.target.value === "direct" ? ((m && m.account) || "bankA") : "custody"; });
+  fillMonths();
+}
+function nextReceiptNo(date, txns){
+  const pre = "R-" + date.slice(2, 4) + date.slice(5, 7) + "-";
+  const nums = txns.filter(t => t.type === "contribution" && t.id.startsWith(pre)).map(t => +t.id.slice(pre.length) || 0);
+  return pre + String((nums.length ? Math.max(...nums) : 0) + 1).padStart(3, "0");
+}
+async function saveContrib(btn){
+  const months = [...document.querySelectorAll("#f_months input:checked")].map(i => i.value).sort();
+  const amount = +val("f_amount"), memberId = val("f_member"), date = val("f_date");
+  if (!memberId || !months.length || !(amount > 0) || !date) return toast("সদস্য, মাস, তারিখ ও টাকা দিন।");
+  await guarded(btn, async () => {
+    const proofs = await uploadProofs();
+    const t = { type: "contribution", memberId, months, amount, date, method: val("f_method"), trxId: val("f_trx"), sender: val("f_sender"), to: val("f_to"), proofs, note: val("f_note"), receivedBy: cfg().managerName, createdAt: nowIso() };
+    let id;
+    await commit(`চাঁদা: ${mName(memberId)} ${amount} (${months.join(", ")})`, d => { id = nextReceiptNo(date, d.txns); d.txns.push(Object.assign({ id }, t)); });
+    showReceipt(id);
+  });
+}
+function formTransfer(){
+  const k = calc();
+  openModal(`${dlgHead("হেফাজতের টাকা যৌথ হিসাবে জমা")}
+  <p class="small muted">বিকাশ/ক্যাশে পাওয়া যে রসিদগুলোর টাকা এবার ব্যাংকে দিচ্ছেন সেগুলো টিক দিন। নিজের ব্যক্তিগত হিসাব থেকে পাঠালে সেটাও লিখুন, আর জমা স্লিপ বা ট্রান্সফারের স্ক্রিনশট যুক্ত করুন।</p>
+  <div class="form">
+    <div class="f full"><span class="small muted">যুক্ত রসিদ</span><div class="checks" id="f_links">${k.undeposited.map(t => `<label><input type="checkbox" value="${esc(t.id)}" data-amt="${t.amount}" checked> ${esc(t.id)} · ${esc(mName(t.memberId))} · ${tk(t.amount)}</label>`).join("") || `<span class="small muted">হেফাজতে কোনো রসিদ নেই।</span>`}</div></div>
+    <label class="f">কোন হিসাবে<select id="f_to">${walletOpts("bankA", ["bankA","bankB"])}</select></label>
+    <label class="f">জমার তারিখ<input type="date" id="f_date" value="${todayISO()}"></label>
+    <label class="f">টাকা<input type="number" id="f_amount" value="${sum(k.undeposited, t => t.amount)}"></label>
+    <label class="f">কীভাবে<select id="f_how"><option>ক্যাশ জমা স্লিপ</option><option>ব্যক্তিগত ব্যাংক হিসাব থেকে ট্রান্সফার</option><option>বিকাশ থেকে ব্যাংকে</option><option>অন্যান্য</option></select></label>
+    <label class="f full">স্লিপ নম্বর / ট্রান্সফার রেফারেন্স<input id="f_ref"></label>
+    ${proofInput()}
+    <label class="f full">নোট<input id="f_note"></label>
+  </div>
+  <div class="row"><button class="btn p" data-act="saveTransfer">সংরক্ষণ</button><button class="btn" data-act="close">বাতিল</button></div>`);
+  document.getElementById("f_links").addEventListener("change", () => { document.getElementById("f_amount").value = sum([...document.querySelectorAll("#f_links input:checked")], i => i.dataset.amt); });
+}
+async function saveTransfer(btn){
+  const amount = +val("f_amount"); if (!(amount > 0)) return toast("টাকার পরিমাণ দিন।");
+  const linked = [...document.querySelectorAll("#f_links input:checked")].map(i => i.value);
+  await guarded(btn, async () => {
+    const proofs = await uploadProofs();
+    const id = genId("D");
+    const t = { id, type: "transfer", from: "custody", to: val("f_to"), amount, date: val("f_date"), how: val("f_how"), ref: val("f_ref"), linked, proofs, note: val("f_note"), createdAt: nowIso() };
+    await commit(`ব্যাংকে জমা: ${amount} → ${walletName(t.to)}`, d => { d.txns.push(t); for (const x of d.txns) if (linked.includes(x.id)) x.depositId = id; });
+    closeModal(); toast("ব্যাংকে জমা লেখা হয়েছে।");
+  });
+}
+function formSimple(kind){
+  openModal(`${dlgHead(kind === "riba" ? "ব্যাংক সুদ বা তার দান" : "খরচ লিখুন")}
+  <div class="form">
+    ${kind === "riba" ? `<label class="f full">কী হয়েছে<select id="f_type"><option value="riba_in">ব্যাংক সুদ দিয়েছে (আলাদা রাখা হবে)</option><option value="riba_out">সুদের টাকা দান করা হয়েছে</option></select></label>` : ""}
+    <label class="f">হিসাব<select id="f_wallet">${walletOpts("bankA")}</select></label>
+    <label class="f">তারিখ<input type="date" id="f_date" value="${todayISO()}"></label>
+    <label class="f">টাকা<input type="number" min="1" id="f_amount"></label>
+    <label class="f">${kind === "riba" ? "কাকে দান / নোট" : "কী বাবদ (ব্যাংক চার্জ, আবগারি শুল্ক, স্ট্যাম্প…)"}<input id="f_note"></label>
+    ${proofInput()}
+  </div>
+  <div class="row"><button class="btn p" data-act="saveSimple" data-kind="${kind}">সংরক্ষণ</button><button class="btn" data-act="close">বাতিল</button></div>`);
+}
+async function saveSimple(btn){
+  const amount = +val("f_amount"); if (!(amount > 0)) return toast("টাকার পরিমাণ দিন।");
+  const type = btn.dataset.kind === "riba" ? val("f_type") : "expense", w = val("f_wallet");
+  await guarded(btn, async () => {
+    const proofs = await uploadProofs();
+    const t = { id: genId("X"), type, amount, date: val("f_date"), note: val("f_note"), proofs, createdAt: nowIso() };
+    if (type === "riba_in") t.to = w; else t.from = w;
+    await commit(`${TYPES[type].l}: ${amount}`, d => d.txns.push(t)); closeModal(); toast("সংরক্ষিত হয়েছে।");
+  });
+}
+function formMember(id){
+  const m = id ? memberById(id) : {}; const c = cfg();
+  const countA = S.members.filter(x => x.account === "bankA" && x.id !== id).length;
+  openModal(`${dlgHead(id ? "সদস্যের তথ্য" : "নতুন সদস্য")}
+  <div class="form">
+    <label class="f">নাম<input id="f_name" value="${esc(m.name)}"></label>
+    <label class="f">পদ<select id="f_role">${(c.roles || []).map(x => `<option value="${esc(x.id)}" ${roleOf(m.role) === x.id ? "selected" : ""}>${esc(x.bn)}</option>`).join("")}<option value="member" ${!roleInfo(m.role) && id ? "selected" : ""}>সাধারণ সদস্য (কোনো পদ নেই)</option></select></label>
+    <label class="f">মোবাইল<input id="f_phone" value="${esc(m.phone)}"></label>
+    <label class="f">বিকাশ/নগদ নম্বর<input id="f_mfs" value="${esc(m.mfs)}"></label>
+    <label class="f">কোন যৌথ হিসাবে<select id="f_account">${walletOpts(m.account || (countA < 3 ? "bankA" : "bankB"), ["bankA","bankB"])}</select></label>
+    <label class="f">কোন মাস থেকে সদস্য<input type="month" id="f_join" value="${esc(m.joinMonth || c.startMonth)}"></label>
+    <label class="f">নমিনির নাম<input id="f_nom" value="${esc(m.nominee)}"></label>
+    <label class="f">নমিনির সাথে সম্পর্ক<input id="f_nomrel" value="${esc(m.nomineeRel)}"></label>
+    <label class="f">অবস্থা<select id="f_status"><option value="active">সক্রিয়</option><option value="left" ${m.status === "left" ? "selected" : ""}>সদস্যপদ ত্যাগ</option></select></label>
+    <label class="f">ক্রম<input type="number" id="f_order" value="${esc(m.order ?? S.members.length + 1)}"></label>
+  </div>
+  <div class="row"><button class="btn p" data-act="saveMember" data-id="${esc(id || "")}">সংরক্ষণ</button><button class="btn" data-act="close">বাতিল</button></div>`);
+}
+async function saveMember(btn){
+  const name = val("f_name"); if (!name) return toast("নাম দিন।");
+  const data = { name, role: val("f_role"), phone: val("f_phone"), mfs: val("f_mfs"), account: val("f_account"), joinMonth: val("f_join"), nominee: val("f_nom"), nomineeRel: val("f_nomrel"), status: val("f_status"), order: +val("f_order") || 0 };
+  const id = btn.dataset.id;
+  await guarded(btn, async () => {
+    await commit(`সদস্য: ${name}`, d => { const ex = d.members.find(x => x.id === id); if (ex) Object.assign(ex, data); else d.members.push(Object.assign({ id: genId("M"), createdAt: nowIso() }, data)); });
+    closeModal(); toast("সদস্যের তথ্য সংরক্ষিত।");
+  });
+}
+function formLoan(){
+  const k = calc();
+  openModal(`${dlgHead("নতুন করজে হাসানা")}
+  <div class="form">
+    <label class="f">সদস্য<select id="f_member">${memberOpts()}</select></label>
+    <label class="f">টাকা<input type="number" min="1" id="f_amount"></label>
+    <label class="f">কোন হিসাব থেকে<select id="f_wallet">${walletOpts("bankA")}</select></label>
+    <label class="f">দেওয়ার তারিখ<input type="date" id="f_date" value="${todayISO()}"></label>
+    <label class="f">ফেরতের শেষ তারিখ<input type="date" id="f_due"></label>
+    <label class="f">সাক্ষী (অন্য সদস্য)<input id="f_witness"></label>
+    <label class="f full">উদ্দেশ্য<input id="f_purpose"></label>
+    <label class="f full">ফেরতের সূচি<input id="f_plan" placeholder="যেমন: মাসে ৫,০০০ করে ৪ কিস্তি"></label>
+    ${proofInput()}
+    <p class="small muted full" id="f_hint"></p>
+  </div>
+  <div class="row"><button class="btn p" data-act="saveLoan">সংরক্ষণ</button><button class="btn" data-act="close">বাতিল</button></div>`);
+  const hint = () => { const m = memberById(val("f_member")); if (!m) return; const s = memberShare(m, k); document.getElementById("f_hint").textContent = `${m.name} এর মোট জমা ${tk(s.contributed)}; নীতিমালা অনুযায়ী সর্বোচ্চ ${tk(s.contributed * cfg().loanMaxPct / 100)}। চলমান ঋণ ${tk(s.loan)}। হাতে আছে ${tk(k.cash - k.ribaPending)}।`; };
+  document.getElementById("f_member").addEventListener("change", hint); hint();
+}
+async function saveLoan(btn){
+  const amount = +val("f_amount"), memberId = val("f_member"); if (!(amount > 0) || !memberId) return toast("সদস্য ও টাকা দিন।");
+  await guarded(btn, async () => {
+    const proofs = await uploadProofs(), loanId = genId("L"), date = val("f_date");
+    const loan = { id: loanId, memberId, date, dueDate: val("f_due"), witness: val("f_witness"), purpose: val("f_purpose"), plan: val("f_plan"), status: "active", proofs, createdAt: nowIso() };
+    await commit(`করজে হাসানা: ${mName(memberId)} ${amount}`, d => { d.loans.push(loan); d.txns.push({ id: genId("X"), type: "loan_disburse", loanId, memberId, from: val("f_wallet"), amount, date, createdAt: nowIso() }); });
+    closeModal(); toast("ঋণ লেখা হয়েছে।");
+  });
+}
+function formRepay(id){
+  const l = S.loans.find(x => x.id === id);
+  openModal(`${dlgHead("ঋণের কিস্তি গ্রহণ — " + esc(mName(l.memberId)))}
+  <div class="form"><label class="f">টাকা (বাকি ${tk(loanOutstanding(l))})<input type="number" id="f_amount" value="${loanOutstanding(l)}"></label>
+  <label class="f">কোথায় জমা হলো<select id="f_wallet">${walletOpts("custody")}</select></label>
+  <label class="f">তারিখ<input type="date" id="f_date" value="${todayISO()}"></label><label class="f">TrxID/নোট<input id="f_note"></label>${proofInput()}</div>
+  <div class="row"><button class="btn p" data-act="saveRepay" data-id="${esc(id)}">সংরক্ষণ</button><button class="btn" data-act="close">বাতিল</button></div>`);
+}
+async function saveRepay(btn){
+  const l = S.loans.find(x => x.id === btn.dataset.id), amount = +val("f_amount"), left = loanOutstanding(l);
+  if (!(amount > 0)) return toast("টাকা দিন।");
+  if (amount > left) return toast("বাকির চেয়ে বেশি নেওয়া যাবে না; করজে হাসানায় অতিরিক্ত কিছু নেই।");
+  await guarded(btn, async () => {
+    const proofs = await uploadProofs();
+    await commit(`ঋণ ফেরত: ${mName(l.memberId)} ${amount}`, d => { d.txns.push({ id: genId("X"), type: "loan_repay", loanId: l.id, memberId: l.memberId, to: val("f_wallet"), amount, date: val("f_date"), note: val("f_note"), proofs, createdAt: nowIso() }); if (amount >= left) { const x = d.loans.find(y => y.id === l.id); if (x) x.status = "closed"; } });
+    closeModal(); toast("কিস্তি লেখা হয়েছে।");
+  });
+}
+function formInvest(){
+  openModal(`${dlgHead("নতুন বিনিয়োগ")}
+  <div class="form">
+    <label class="f full">নাম<input id="f_name" placeholder="যেমন: গরু মোটাতাজাকরণ — ২০২৮"></label>
+    <label class="f">খাত<input id="f_sector" placeholder="কৃষি, পশুপালন, দোকান…"></label>
+    <label class="f">ধরন<select id="f_model">${Object.entries(MODELS).map(([k,v]) => `<option value="${k}">${v}</option>`).join("")}</select></label>
+    <label class="f">অংশীদার / দায়িত্বে<input id="f_partner"></label>
+    <label class="f">লাভ ভাগের অনুপাত<input id="f_ratio" placeholder="যেমন: আমরা ৬০% : তিনি ৪০%"></label>
+    <label class="f">শুরুর তারিখ<input type="date" id="f_date" value="${todayISO()}"></label>
+    <label class="f">প্রথম কিস্তিতে দেওয়া টাকা<input type="number" id="f_amount"></label>
+    <label class="f">কোন হিসাব থেকে<select id="f_wallet">${walletOpts("bankA")}</select></label>
+    <label class="f full">বিবরণ / চুক্তির মূল শর্ত<textarea id="f_notes"></textarea></label>
+    ${proofInput()}
+  </div>
+  <div class="row"><button class="btn p" data-act="saveInvest">সংরক্ষণ</button><button class="btn" data-act="close">বাতিল</button></div>`);
+}
+async function saveInvest(btn){
+  const name = val("f_name"); if (!name) return toast("নাম দিন।");
+  await guarded(btn, async () => {
+    const proofs = await uploadProofs(), id = genId("I"), amount = +val("f_amount"), date = val("f_date");
+    const inv = { id, name, sector: val("f_sector"), model: val("f_model"), partner: val("f_partner"), ratio: val("f_ratio"), startDate: date, notes: val("f_notes"), status: "active", proofs, createdAt: nowIso() };
+    await commit(`বিনিয়োগ: ${name}`, d => { d.invs.push(inv); if (amount > 0) d.txns.push({ id: genId("X"), type: "invest_out", investId: id, from: val("f_wallet"), amount, date, createdAt: nowIso() }); });
+    closeModal(); toast("বিনিয়োগ যোগ হয়েছে।");
+  });
+}
+function formInvMove(id, dir){
+  const i = S.invs.find(x => x.id === id);
+  openModal(`${dlgHead((dir === "out" ? "আরও টাকা দিন — " : "ফেরত ও লাভ গ্রহণ — ") + esc(i.name))}
+  <div class="form">
+    ${dir === "out" ? `<label class="f">টাকা<input type="number" id="f_amount"></label><label class="f">কোন হিসাব থেকে<select id="f_wallet">${walletOpts("bankA")}</select></label>` :
+    `<label class="f">মূলধন ফেরত (খাটছে ${tk(invCapital(i).active)})<input type="number" id="f_principal" value="0"></label><label class="f">লাভ<input type="number" id="f_profit" value="0"></label><label class="f">কোথায় জমা হলো<select id="f_wallet">${walletOpts("bankA")}</select></label>`}
+    <label class="f">তারিখ<input type="date" id="f_date" value="${todayISO()}"></label>
+    <label class="f full">নোট<input id="f_note"></label>${proofInput()}
+  </div>
+  <div class="row"><button class="btn p" data-act="saveInvMove" data-id="${esc(id)}" data-dir="${dir}">সংরক্ষণ</button><button class="btn" data-act="close">বাতিল</button></div>`);
+}
+async function saveInvMove(btn){
+  const id = btn.dataset.id, dir = btn.dataset.dir;
+  let t;
+  if (dir === "out") { const a = +val("f_amount"); if (!(a > 0)) return toast("টাকা দিন।"); t = { type: "invest_out", investId: id, from: val("f_wallet"), amount: a }; }
+  else { const p = +val("f_principal") || 0, pr = +val("f_profit") || 0; if (p < 0 || pr < 0 || p + pr <= 0) return toast("মূলধন বা লাভের পরিমাণ দিন। ক্ষতি হলে 'বন্ধ করুন' থেকে লিখুন।"); t = { type: "invest_in", investId: id, to: val("f_wallet"), principal: p, profit: pr, amount: p + pr }; }
+  await guarded(btn, async () => { const proofs = await uploadProofs(); Object.assign(t, { id: genId("X"), date: val("f_date"), note: val("f_note"), proofs, createdAt: nowIso() }); await commit(`${TYPES[t.type].l}: ${t.amount}`, d => d.txns.push(t)); closeModal(); toast("সংরক্ষিত।"); });
+}
+function formInvClose(id){
+  const i = S.invs.find(x => x.id === id), c = invCapital(i);
+  openModal(`${dlgHead("বিনিয়োগ বন্ধ — " + esc(i.name))}
+  <p>এখনও খাটছে ${tk(c.active)}। ফেরত পাওয়া সব টাকা আগে 'ফেরত/লাভ গ্রহণ' দিয়ে লিখে নিন। এখন বন্ধ করলে বাকি ${tk(c.active)} ক্ষতি হিসেবে ধরা হবে এবং সবার অংশ থেকে অনুপাতে বাদ যাবে।</p>
+  <label class="f">বন্ধের কারণ / মন্তব্য<input id="f_note"></label>
+  <div class="row"><button class="btn p" data-act="saveInvClose" data-id="${esc(id)}">বন্ধ করুন</button><button class="btn" data-act="close">বাতিল</button></div>`);
+}
+async function saveInvClose(btn){
+  const i = S.invs.find(x => x.id === btn.dataset.id), c = invCapital(i), note = val("f_note");
+  await guarded(btn, async () => { await commit(`বিনিয়োগ বন্ধ: ${i.name}`, d => { const x = d.invs.find(y => y.id === i.id); Object.assign(x, { status: "closed", writeOff: (+x.writeOff || 0) + c.active, closedOn: todayISO(), closeNote: note }); }); closeModal(); toast("বিনিয়োগ বন্ধ করা হয়েছে।"); });
+}
+function formDecision(){
+  openModal(`${dlgHead("সভার সিদ্ধান্ত")}
+  <div class="form">
+    <label class="f">তারিখ<input type="date" id="f_date" value="${todayISO()}"></label>
+    <label class="f">স্থান<input id="f_place"></label>
+    <label class="f full">বিষয়<input id="f_title" placeholder="যেমন: নীতিমালা অনুমোদন, প্রথম বিনিয়োগ প্রস্তাব"></label>
+    <label class="f full">বিস্তারিত ও সিদ্ধান্ত<textarea id="f_detail"></textarea></label>
+    ${activeMembers().map(m => `<label class="f">${esc(m.name)}<select id="v_${esc(m.id)}"><option value="yes">হ্যাঁ</option><option value="no">না</option><option value="abstain">বিরত</option><option value="absent">অনুপস্থিত</option></select></label>`).join("")}
+  </div>
+  <div class="row"><button class="btn p" data-act="saveDecision">সংরক্ষণ</button><button class="btn" data-act="close">বাতিল</button></div>`);
+}
+async function saveDecision(btn){
+  const title = val("f_title"); if (!title) return toast("বিষয় লিখুন।");
+  const votes = {}; activeMembers().forEach(m => votes[m.id] = val("v_" + m.id));
+  const dec = { id: genId("C"), date: val("f_date"), place: val("f_place"), title, detail: val("f_detail"), votes, needed: cfg().approvalNeeded, createdAt: nowIso() };
+  await guarded(btn, async () => { await commit(`সিদ্ধান্ত: ${title}`, d => d.decisions.push(dec)); closeModal(); toast("সিদ্ধান্ত লেখা হয়েছে।"); });
+}
+function formConfirm(title, body, act, id){
+  openModal(`${dlgHead(title)}<p>${body}</p><div class="row"><button class="btn p danger" data-act="${act}" data-id="${esc(id)}">হ্যাঁ, করুন</button><button class="btn" data-act="close">বাতিল</button></div>`);
+}
+function formBylaws(){
+  openModal(`${dlgHead("নীতিমালা সম্পাদনা")}<p class="small muted">"## " দিয়ে শুরু হলে শিরোনাম, "- " দিয়ে শুরু হলে তালিকা।</p><textarea id="f_text" style="min-height:420px;border:1px solid var(--line);border-radius:7px;padding:10px;background:var(--bg)">${esc((S.bylaws && S.bylaws.text) || DEFAULT_BYLAWS)}</textarea>
+  <div class="row"><button class="btn p" data-act="saveBylaws">সংরক্ষণ</button><button class="btn" data-act="close">বাতিল</button></div>`, true);
+}
+function formDelete(id){
+  const t = S.txns.find(x => x.id === id);
+  const warn = t.type === "contribution" && t.depositId ? `<p class="c-warn small">এই রসিদ একটি ব্যাংক জমার সাথে যুক্ত। মুছলে ব্যাংক জমার হিসাব মিলবে না।</p>` : "";
+  openModal(`${dlgHead("লেনদেন মুছবেন?")}<p>${TYPES[t.type].l} · ${esc(t.id)} · ${tk(t.amount)}</p>${warn}<p class="small muted">মুছে ফেলার রেকর্ড কারণসহ সবাই দেখতে পাবেন, আর GitHub-এর ইতিহাসেও আগের অবস্থা থেকে যাবে।</p><label class="f">কারণ<input id="f_reason" placeholder="যেমন: ভুল পরিমাণ লেখা হয়েছিল"></label>
+  <div class="row"><button class="btn p danger" data-act="doDelete" data-id="${esc(id)}">মুছুন</button><button class="btn" data-act="close">বাতিল</button></div>`);
+}
+async function doDelete(btn){
+  const reason = val("f_reason"); if (!reason) return toast("কারণ লিখুন।");
+  const t = S.txns.find(x => x.id === btn.dataset.id);
+  await guarded(btn, async () => {
+    await commit(`মুছে ফেলা: ${t.id} — ${reason}`, d => {
+      d.audit.push({ id: genId("A"), action: "delete", at: nowIso(), reason, data: t });
+      if (t.type === "transfer") for (const x of d.txns) if (x.depositId === t.id) delete x.depositId;
+      d.txns = d.txns.filter(x => x.id !== t.id);
+    });
+    closeModal(); toast("মুছে ফেলা হয়েছে।");
+  });
+}
+function formAddProof(id){
+  openModal(`${dlgHead("প্রমাণ যুক্ত করুন")}<div class="form">${proofInput()}</div><div class="row"><button class="btn p" data-act="saveProof" data-id="${esc(id)}">যুক্ত করুন</button><button class="btn" data-act="close">বাতিল</button></div>`);
+}
+async function saveProof(btn){
+  const id = btn.dataset.id;
+  await guarded(btn, async () => { const p = await uploadProofs(); if (!p.length) throw new Error("কোনো ফাইল বাছাই করা হয়নি"); await commit(`প্রমাণ যুক্ত: ${id}`, d => { const x = d.txns.find(y => y.id === id); x.proofs = (x.proofs || []).concat(p); }); closeModal(); toast("প্রমাণ যুক্ত হয়েছে।"); });
+}
+async function saveCfg(btn){
+  const c = cfg();
+  const rates = val("s_rates").split("\n").map(l => l.trim().split(/\s+/)).filter(p => /^\d{4}-\d{2}$/.test(p[0]) && +p[1] > 0).map(p => ({ from: p[0], amount: +p[1] }));
+  const goals = val("s_goals").split("\n").map(l => l.split("|").map(s => s.trim())).filter(p => p[0] && +p[1] > 0).map(p => ({ name: p[0], amount: +p[1] }));
+  const accounts = {}; for (const id of ["bankA","bankB"]) accounts[id] = { label: val(`s_${id}_label`) || DEFAULT_CFG.accounts[id].label, bank: val(`s_${id}_bank`), branch: val(`s_${id}_branch`), last4: val(`s_${id}_last4`).replace(/\D/g, "").slice(-4), opened: val(`s_${id}_opened`) };
+  const roles = [...document.querySelectorAll("[data-role-row]")].map(row => ({ id: row.dataset.roleId || genId("R"), bn: row.querySelector(".r_bn").value.trim(), en: row.querySelector(".r_en").value.trim(), duty: row.querySelector(".r_duty").value.trim() })).filter(x => x.bn);
+  const data = Object.assign({}, c, { roles, groupNameEn: val("s_nameEn"), custodyLabel: val("s_custody") || DEFAULT_CFG.custodyLabel, groupName: val("s_name") || c.groupName, managerName: val("s_mgr"), startMonth: val("s_start") || c.startMonth, dueDay: +val("s_due") || 12, depositByDay: +val("s_dep") || 20, approvalNeeded: +val("s_appr") || 4, loanMaxPct: +val("s_loan") || 0, rates: rates.length ? rates : c.rates, goals, accounts });
+  await guarded(btn, async () => { await commit("সেটিংস পরিবর্তন", d => { d.cfg = data; }); toast("সেটিংস সংরক্ষিত।"); });
+}
+
+/* ---------- Receipt ---------- */
+function receiptStatus(t){
+  if (t.to !== "custody") return "সরাসরি " + walletName(t.to) + "-এ জমা";
+  if (t.depositId) { const d = S.txns.find(x => x.id === t.depositId); return "ব্যাংকে জমা হয়েছে" + (d ? ": " + walletName(d.to) + ", " + dLabel(d.date) : ""); }
+  return walletName("custody") + ", ব্যাংকে জমার অপেক্ষায়";
+}
+const receiptLink = t => location.origin + location.pathname + "#rcpt-" + t.id;
+function receiptText(t){
+  const c = cfg();
+  return [`${c.groupName} — টাকা প্রাপ্তির রসিদ`, `রসিদ নং: ${t.id}`, `তারিখ: ${dLabel(t.date)}`, `সদস্য: ${mName(t.memberId)}`, `যে মাসের চাঁদা: ${(t.months||[]).map(mLabel).join(", ")}`,
+    `পরিমাণ: ${tk(t.amount)} (${tkWords(t.amount)})`, `মাধ্যম: ${METHODS[t.method] || t.method}${t.trxId ? " · TrxID " + t.trxId : ""}`, `গ্রহণকারী: ${t.receivedBy || c.managerName || "প্রধান অর্থ কর্মকর্তা"}`,
+    `বর্তমান অবস্থা: ${receiptStatus(t)}`, `যাচাই কোড: ${verifyCode(t)}`, `অনলাইনে যাচাই: ${receiptLink(t)}`].join("\n");
+}
+function wrap(g, text, x, y, maxW, lh){
+  const ws = String(text).split(" "); let line = "", n = 0;
+  for (const w of ws) { const test = line ? line + " " + w : w; if (g.measureText(test).width > maxW && line) { g.fillText(line, x, y + n * lh); n++; line = w; } else line = test; }
+  if (line) { g.fillText(line, x, y + n * lh); n++; }
+  return n;
+}
+async function drawReceipt(t){
+  try { await Promise.all([document.fonts.load('600 30px "Hind Siliguri"'), document.fonts.load('400 40px "Tiro Bangla"'), document.fonts.load('700 30px "Hind Siliguri"'), document.fonts.load('500 24px "Hind Siliguri"'), document.fonts.load('400 21px "Hind Siliguri"')]); } catch (e) {}
+  const c = cfg(), Wd = 1000, H = 1240, cv = document.createElement("canvas"); cv.width = Wd; cv.height = H;
+  const g = cv.getContext("2d"), green = "#0e6a50", gold = "#a8792a", ink = "#15211c", muted = "#5a6a63";
+  g.fillStyle = "#ffffff"; g.fillRect(0, 0, Wd, H);
+  g.strokeStyle = gold; g.lineWidth = 3; g.strokeRect(24, 24, Wd - 48, H - 48); g.lineWidth = 1; g.strokeRect(34, 34, Wd - 68, H - 68);
+  g.fillStyle = "#ffffff"; g.fillRect(34, 34, Wd - 68, 150);
+  g.fillStyle = gold; g.fillRect(34, 182, Wd - 68, 3);
+  drawMark(g, 60, 44, 128);
+  g.textAlign = "left"; g.fillStyle = ink; g.font = '700 44px "Hind Siliguri", sans-serif'; g.fillText(c.groupName, 210, 102);
+  g.fillStyle = gold; g.font = '600 22px "Hind Siliguri", sans-serif'; g.fillText((c.groupNameEn || "").toUpperCase().split("").join(" "), 212, 140);
+  g.textAlign = "right"; g.fillStyle = green; g.font = '700 30px "Hind Siliguri", sans-serif'; g.fillText("টাকা প্রাপ্তির রসিদ", Wd - 70, 102);
+  g.fillStyle = muted; g.font = '400 20px "Hind Siliguri", sans-serif'; g.fillText("Money Receipt", Wd - 70, 136);
+  g.textAlign = "left"; g.fillStyle = ink; g.font = '600 26px "Hind Siliguri", sans-serif';
+  g.fillText("রসিদ নং: " + t.id, 70, 240); g.textAlign = "right"; g.fillText("তারিখ: " + dLabel(t.date), Wd - 70, 240); g.textAlign = "left";
+  g.strokeStyle = "#d6dfda"; g.beginPath(); g.moveTo(70, 265); g.lineTo(Wd - 70, 265); g.stroke();
+  g.fillStyle = "#e1f0ea"; g.fillRect(70, 290, Wd - 140, 150);
+  g.fillStyle = muted; g.font = '500 24px "Hind Siliguri", sans-serif'; g.fillText("টাকার পরিমাণ", 100, 335);
+  g.fillStyle = green; g.font = '700 64px "Hind Siliguri", sans-serif'; g.fillText(tk(t.amount), 100, 410);
+  g.fillStyle = ink; g.font = '500 24px "Hind Siliguri", sans-serif'; g.textAlign = "right"; wrap(g, "কথায়: " + tkWords(t.amount), Wd - 100, 375, 440, 32); g.textAlign = "left";
+  const rows = [["সদস্যের নাম", mName(t.memberId)], ["যে মাসের চাঁদা", (t.months||[]).map(mLabel).join(", ")], ["প্রদানের মাধ্যম", METHODS[t.method] || t.method], ["ট্রানজেকশন আইডি", t.trxId || "—"], ["প্রেরকের নম্বর", t.sender ? bn(t.sender) : "—"], ["গ্রহণকারী", t.receivedBy || c.managerName || "প্রধান অর্থ কর্মকর্তা"], ["টাকা এখন কোথায়", receiptStatus(t)]];
+  let y = 500;
+  for (const [k, v] of rows) { g.fillStyle = muted; g.font = '500 25px "Hind Siliguri", sans-serif'; g.fillText(k, 70, y); g.fillStyle = ink; g.font = '600 27px "Hind Siliguri", sans-serif'; const lines = wrap(g, String(v), 340, y, Wd - 410, 34); y += 30 + lines * 34; g.strokeStyle = "#eef2f0"; g.beginPath(); g.moveTo(70, y - 26); g.lineTo(Wd - 70, y - 26); g.stroke(); y += 8; }
+  g.save(); g.translate(Wd - 180, H - 175); g.rotate(-0.12); g.strokeStyle = gold; g.lineWidth = 4; g.beginPath(); g.arc(0, 0, 82, 0, Math.PI * 2); g.stroke(); g.lineWidth = 1.5; g.beginPath(); g.arc(0, 0, 70, 0, Math.PI * 2); g.stroke();
+  g.fillStyle = gold; g.textAlign = "center"; g.font = '700 30px "Hind Siliguri", sans-serif'; g.fillText("গৃহীত", 0, 2); g.font = '600 18px "Hind Siliguri", sans-serif'; g.fillText(verifyCode(t), 0, 32); g.restore();
+  g.textAlign = "left"; g.fillStyle = ink; g.font = '600 24px "Hind Siliguri", sans-serif'; g.fillText("যাচাই কোড: " + verifyCode(t), 70, H - 220);
+  g.fillStyle = muted; g.font = '400 21px "Hind Siliguri", sans-serif';
+  wrap(g, "এই রসিদ কম্পিউটারে তৈরি; স্বাক্ষর প্রয়োজন নেই। নিচের লিংকে পাসফ্রেজ দিয়ে খুললে রসিদটি তহবিলের খতিয়ানে মিলিয়ে দেখা যাবে।", 70, H - 180, Wd - 340, 30);
+  g.font = '400 17px "Hind Siliguri", sans-serif'; wrap(g, receiptLink(t).replace(/^https?:\/\//, ""), 70, H - 95, Wd - 340, 22);
+  return cv;
+}
+const MARK = [[[139.04, 93.02, 120.0, 14.0, 186.04, 61.98], "#C2912E"], [[120.0, 126.0, 139.04, 93.02, 186.04, 61.98], "#9A7020"], [[157.25, 133.92, 226.52, 91.39, 201.29, 169.03], "#0E6A50"], [[120.0, 126.0, 157.25, 133.92, 201.29, 169.03], "#0A4F3B"], [[123.98, 163.87, 185.83, 216.61, 104.2, 216.61], "#0E6A50"], [[120.0, 126.0, 123.98, 163.87, 104.2, 216.61], "#0A4F3B"], [[85.21, 141.49, 54.17, 216.61, 28.94, 138.97], "#0E6A50"], [[120.0, 126.0, 85.21, 141.49, 28.94, 138.97], "#0A4F3B"], [[94.52, 97.7, 13.48, 91.39, 79.52, 43.41], "#0E6A50"], [[120.0, 126.0, 94.52, 97.7, 79.52, 43.41], "#0A4F3B"]];
+function drawMark(g, x, y, size){ const k = size / 240; for (const [pts, fill] of MARK) { g.fillStyle = fill; g.beginPath(); for (let i = 0; i < pts.length; i += 2) { const px = x + pts[i] * k, py = y + pts[i+1] * k; i ? g.lineTo(px, py) : g.moveTo(px, py); } g.closePath(); g.fill(); } }
+let lastReceipt = null;
+async function showReceipt(id){
+  const t = S.txns.find(x => x.id === id && x.type === "contribution");
+  if (!t) { openModal(`${dlgHead("রসিদ পাওয়া যায়নি")}<p>${esc(id)} নম্বরের কোনো রসিদ খতিয়ানে নেই। হয়তো মুছে ফেলা হয়েছে; "খতিয়ান"-এর পরিবর্তনের রেকর্ড দেখুন।</p>`); return; }
+  openModal(`${dlgHead("রসিদ " + esc(t.id))}<div class="loading">রসিদ তৈরি হচ্ছে…</div>`);
+  const cv = await drawReceipt(t);
+  const blob = await new Promise(r => cv.toBlob(r, "image/png"));
+  if (lastReceipt) URL.revokeObjectURL(lastReceipt.url);
+  lastReceipt = { id: t.id, blob, url: URL.createObjectURL(blob) };
+  const canShare = !!(navigator.canShare && navigator.canShare({ files: [new File([blob], "r.png", { type: "image/png" })] }));
+  modal.querySelector(".dlg").innerHTML = `${dlgHead("রসিদ " + esc(t.id))}<div class="alert good small">এই রসিদটি তহবিলের খতিয়ানে আছে। বর্তমান অবস্থা: <b>${esc(receiptStatus(t))}</b></div><img class="receipt-img" alt="রসিদ ${esc(t.id)}" src="${lastReceipt.url}">
+  ${t.proofs && t.proofs.length ? `<div class="small muted">সংযুক্ত প্রমাণ:</div>${proofsHtml(t.proofs)}` : ""}
+  <div class="row">${canShare ? `<button class="btn p" data-act="sharereceipt" data-id="${esc(t.id)}">ছবি পাঠান (হোয়াটসঅ্যাপ/মেসেঞ্জার)</button>` : ""}<a class="btn ${canShare ? "" : "p"}" href="${lastReceipt.url}" download="রসিদ-${esc(t.id)}.png">ছবি ডাউনলোড</a><button class="btn" data-act="copyreceipt" data-id="${esc(t.id)}">লেখা কপি</button></div>`;
+}
+async function shareReceipt(id){
+  const t = S.txns.find(x => x.id === id);
+  try { await navigator.share({ files: [new File([lastReceipt.blob], `রসিদ-${id}.png`, { type: "image/png" })], text: receiptText(t) }); } catch (e) { if (e.name !== "AbortError") toast("পাঠানো যায়নি; ছবি ডাউনলোড করে পাঠান।"); }
+}
+async function copyText(text){ try { await navigator.clipboard.writeText(text); toast("কপি হয়েছে।"); } catch (e) { openModal(`${dlgHead("এই লেখা কপি করুন")}<textarea style="min-height:260px;width:100%" readonly>${esc(text)}</textarea>`); } }
+function monthlyReport(){
+  const c = cfg(), k = calc(), cm = curMonth(), am = activeMembers();
+  const lines = [`${c.groupName} — ${mLabel(cm)} রিপোর্ট`, "", `এ মাসের চাঁদা (শেষ তারিখ ${bn(c.dueDay)}):`];
+  am.forEach(m => { const st = monthStatus(m, cm); lines.push(`• ${m.name}: ${st === "paid" ? "পরিশোধিত" : st === "partial" ? "আংশিক " + tk(paidFor(m.id, cm)) : st === "late" ? "বাকি" : "এখনও দেননি"}`); });
+  lines.push("", `মোট সম্পদ: ${tk(k.assets)}`, `${walletName("custody")}: ${tk(k.bal.custody)}`, `${c.accounts.bankA.label}: ${tk(k.bal.bankA)}`, `${c.accounts.bankB.label}: ${tk(k.bal.bankB)}`);
+  if (k.loansOut) lines.push(`সদস্যদের কাছে ঋণ: ${tk(k.loansOut)}`);
+  if (k.invActive) lines.push(`চলমান বিনিয়োগ: ${tk(k.invActive)}`);
+  lines.push(`এ পর্যন্ত মোট চাঁদা: ${tk(k.totalContrib)}`, `হিসাব: ${k.balanced ? "মিলছে" : "মিলছে না, যাচাই চলছে"}`, "", "বিস্তারিত: " + location.origin + location.pathname);
+  return lines.join("\n");
+}
+function memberStatement(id){
+  const m = memberById(id), k = calc(), s = memberShare(m, k);
+  const list = S.txns.filter(t => t.memberId === id).sort((a,b) => (a.date||"").localeCompare(b.date||""));
+  openModal(`${dlgHead("হিসাব বিবরণী — " + esc(m.name))}
+  <dl class="kv"><dt>মোট জমা</dt><dd>${tk(s.contributed)}</dd><dt>লাভ/ক্ষতির অংশ</dt><dd>${tk(s.profitShare)}</dd><dt>তহবিলে অংশ</dt><dd><b>${tk(s.value)}</b></dd><dt>ঋণ বাকি</dt><dd>${tk(s.loan)}</dd></dl>
+  <div class="tbl-wrap"><table><thead><tr><th>তারিখ</th><th>ধরন</th><th>বিবরণ</th><th class="r">টাকা</th><th></th></tr></thead><tbody>${list.map(t => `<tr><td class="num small">${dLabel(t.date)}</td><td><span class="chip ${TYPES[t.type].c}">${TYPES[t.type].l}</span></td><td class="small">${t.type === "contribution" ? esc(t.id) + " · " + (t.months||[]).map(mLabel).join(", ") : esc(t.note || "")}</td><td class="r num">${tk(t.amount)}</td><td>${t.type === "contribution" ? `<button class="btn sm" data-act="receipt" data-id="${esc(t.id)}">রসিদ</button>` : ""}</td></tr>`).join("") || `<tr><td colspan="5" class="muted">কোনো লেনদেন নেই।</td></tr>`}</tbody></table></div>`, true);
+}
+function download(filename, data, type){ const url = URL.createObjectURL(new Blob([data], { type })); const a = document.createElement("a"); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000); }
+function exportMenu(){
+  openModal(`${dlgHead("ব্যাকআপ ও এক্সপোর্ট")}<p class="small muted">মাসে একবার পূর্ণ ব্যাকআপ নামিয়ে রাখা ভালো। এই ফাইল এনক্রিপ্ট করা নয়, তাই নিরাপদ জায়গায় রাখুন। CSV ফাইল এক্সেল বা গুগল শিটে খোলা যায়।</p>
+  <div class="row"><button class="btn p" data-act="dljson">পূর্ণ ব্যাকআপ (JSON)</button><button class="btn" data-act="dlcsv">খতিয়ান (CSV)</button><button class="btn" data-act="report">মাসিক রিপোর্ট কপি</button></div>`);
+}
+function csv(){
+  const rows = [["id","তারিখ","ধরন","সদস্য","মাস","থেকে","প্রতি","টাকা","মূলধন","লাভ","মাধ্যম","TrxID","রেফারেন্স","নোট","প্রমাণ সংখ্যা"]];
+  for (const t of S.txns.slice().sort((a,b)=>(a.date||"").localeCompare(b.date||""))) rows.push([t.id, t.date, TYPES[t.type].l, t.memberId ? mName(t.memberId) : "", (t.months||[]).join(" "), t.from ? walletName(t.from) : "", t.to ? walletName(t.to) : "", t.amount, t.principal ?? "", t.profit ?? "", METHODS[t.method] || "", t.trxId || "", t.ref || "", t.note || "", (t.proofs||[]).length]);
+  return "﻿" + rows.map(r => r.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(",")).join("\n");
+}
+function formImport(){
+  openModal(`${dlgHead("ব্যাকআপ থেকে ফেরত আনুন")}<p class="small">আগে নামানো JSON ব্যাকআপ বাছাই করুন। এখনকার সব তথ্য ব্যাকআপের তথ্য দিয়ে বদলে যাবে (আগের অবস্থা GitHub-এর ইতিহাসে থেকে যাবে)।</p><label class="f">ব্যাকআপ ফাইল<input type="file" id="f_json" accept="application/json,.json"></label><div class="row"><button class="btn p" data-act="doImport">ফেরত আনুন</button><button class="btn" data-act="close">বাতিল</button></div>`);
+}
+async function doImport(btn){
+  const f = document.getElementById("f_json").files[0]; if (!f) return toast("ফাইল বাছাই করুন।");
+  await guarded(btn, async () => {
+    const j = JSON.parse(await f.text());
+    const nd = normalize({ cfg: j.cfg || j.config || DEFAULT_CFG, bylaws: j.bylaws || null, members: j.members, txns: j.txns, loans: j.loans, invs: j.invs, decisions: j.decisions, audit: j.audit });
+    await commit("ব্যাকআপ থেকে ফেরত আনা", d => { Object.keys(d).forEach(k => delete d[k]); Object.assign(d, nd); });
+    closeModal(); toast("ব্যাকআপ ফেরত আনা হয়েছে।");
+  });
+}
+function formLogin(){
+  openModal(`${dlgHead("অ্যাডমিন লগইন")}
+  <p class="small">GitHub-এর একটি <b>fine-grained personal access token</b> দিন, যেটির শুধু এই রিপোজিটরির <b>Contents: Read and write</b> অনুমতি আছে। কীভাবে বানাবেন তা README-তে লেখা আছে।</p>
+  <label class="f">টোকেন<input type="password" id="f_token" placeholder="github_pat_…" autocomplete="off"></label>
+  <label class="cb"><input type="checkbox" id="f_rem" checked> এই ডিভাইসে মনে রাখুন (শুধু নিজের ফোন/কম্পিউটারে)</label>
+  <div class="row"><button class="btn p" data-act="doLogin">লগইন</button><button class="btn" data-act="close">বাতিল</button></div>`);
+}
+async function doLogin(btn){
+  const tok = val("f_token"); if (!tok) return toast("টোকেন দিন।");
+  const prev = GH.token; GH.token = tok;
+  btn.disabled = true;
+  try {
+    const ok = await GH.checkToken();
+    if (!ok) throw new Error("এই টোকেনে রিপোজিটরিতে লেখার অনুমতি নেই (Contents: Read and write লাগবে)।");
+    S.canEdit = true; if (document.getElementById("f_rem").checked) LS.set(lsKey("token"), tok);
+    closeModal(); toast("অ্যাডমিন হিসেবে লগইন হয়েছে।");
+    if (S.phase === "ready") await refresh(true);
+    else { if (S.phase !== "nodata") { const t = await loadData(); if (t) FILE_TEXT = t; } S.msg = ""; render(); }
+  } catch (e) { GH.token = prev; S.canEdit = !!prev; btn.disabled = false; toast(errText(e)); }
+}
+function formChangePass(){
+  openModal(`${dlgHead("পাসফ্রেজ বদলান")}<p class="small">কোনো সদস্য চলে গেলে বা পাসফ্রেজ ফাঁস হলে বদলান। সব ডেটা ও প্রমাণ ফাইল নতুন পাসফ্রেজে আবার এনক্রিপ্ট হবে; প্রমাণ বেশি থাকলে কয়েক মিনিট লাগতে পারে। পরে সবাইকে নতুন পাসফ্রেজ জানাতে হবে।</p><p class="small muted">মনে রাখবেন: GitHub-এর পুরোনো ইতিহাসে আগের ফাইলগুলো পুরোনো পাসফ্রেজেই খোলা যায়।</p>
+  <label class="f">নতুন পাসফ্রেজ<input type="password" id="f_p1" autocomplete="new-password"></label><label class="f">আবার<input type="password" id="f_p2" autocomplete="new-password"></label>
+  <div class="row"><button class="btn p" data-act="doChangePass">বদলান</button><button class="btn" data-act="close">বাতিল</button></div>`);
+}
+async function doChangePass(btn){
+  const p1 = val("f_p1"); if (p1.length < 12) return toast("অন্তত ১২ অক্ষর দিন।"); if (p1 !== val("f_p2")) return toast("দুটি পাসফ্রেজ মিলছে না।");
+  await guarded(btn, async () => {
+    const oldKey = KEY, newSalt = crypto.getRandomValues(new Uint8Array(16)), newKey = await deriveKey(p1, newSalt, KDF_ITER);
+    const paths = []; for (const t of S.txns.concat(S.loans, S.invs)) for (const p of (t.proofs || [])) paths.push(p.path);
+    let i = 0;
+    for (const path of paths) {
+      btn.textContent = `প্রমাণ ${bn(++i)}/${bn(paths.length)}…`;
+      const f = await GH.getFile(path); if (!f) continue;
+      const o = JSON.parse(f.text); const bytes = await decBytes(oldKey, o); const e = await encBytes(newKey, bytes);
+      await GH.put(path, JSON.stringify({ app: APP_ID, v: 1, type: o.type, iv: e.iv, ct: e.ct }), f.sha, "পাসফ্রেজ পরিবর্তন: প্রমাণ");
+    }
+    KEY = newKey; SALT = newSalt;
+    await commit("পাসফ্রেজ পরিবর্তন", () => {});
+    if (LS.get(lsKey("key"))) LS.set(lsKey("key"), JSON.stringify({ salt: b64(SALT), key: await exportKey(KEY) }));
+    closeModal(); toast("পাসফ্রেজ বদলানো হয়েছে। সবাইকে নতুনটা জানান।");
+  });
+}
+
+/* ---------- Events ---------- */
+document.addEventListener("click", async e => {
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  const a = b.dataset.act, id = b.dataset.id;
+  if (b.tagName === "BUTTON" || b.getAttribute("href") === "#") e.preventDefault();
+  const writes = ["contrib","transfer","expense","riba","member","loan","repay","invest","invout","invin","invclose","decision","bylaws","del","addproof","savecfg","import","chpass","deldec"];
+  if (writes.includes(a) && !S.canEdit) return toast("এ কাজের জন্য অ্যাডমিন লগইন লাগবে।");
+  switch (a) {
+    case "close": closeModal(); break;
+    case "retry": boot(); break;
+    case "saveRepo": { const r = val("u_repo").replace(/^https?:\/\/github\.com\//, "").replace(/\/$/, ""); if (!/^[\w.-]+\/[\w.-]+$/.test(r)) return toast("ইউজারনেম/রিপো আকারে লিখুন।"); LS.set("fund.repo", r); boot(); break; }
+    case "changeRepo": LS.del("fund.repo"); S.phase = "norepo"; render(); break;
+    case "login": formLogin(); break;
+    case "doLogin": doLogin(b); break;
+    case "logout": LS.del(lsKey("token")); GH.token = ""; S.canEdit = false; toast("লগআউট হয়েছে।"); render(); break;
+    case "lock": LS.del(lsKey("key")); KEY = null; D = null; S.phase = "locked"; S.msg = ""; render(); break;
+    case "refresh": await refresh(true); toast("সর্বশেষ তথ্য আনা হয়েছে।"); break;
+    case "contrib": formContrib(b.dataset.member); break;
+    case "saveContrib": saveContrib(b); break;
+    case "transfer": formTransfer(); break;
+    case "saveTransfer": saveTransfer(b); break;
+    case "expense": formSimple("expense"); break;
+    case "riba": formSimple("riba"); break;
+    case "saveSimple": saveSimple(b); break;
+    case "member": formMember(id); break;
+    case "saveMember": saveMember(b); break;
+    case "loan": formLoan(); break;
+    case "saveLoan": saveLoan(b); break;
+    case "repay": formRepay(id); break;
+    case "saveRepay": saveRepay(b); break;
+    case "invest": formInvest(); break;
+    case "saveInvest": saveInvest(b); break;
+    case "invout": formInvMove(id, "out"); break;
+    case "invin": formInvMove(id, "in"); break;
+    case "saveInvMove": saveInvMove(b); break;
+    case "invclose": formInvClose(id); break;
+    case "saveInvClose": saveInvClose(b); break;
+    case "decision": formDecision(); break;
+    case "saveDecision": saveDecision(b); break;
+    case "deldec": formConfirm("সিদ্ধান্ত মুছবেন?", "এই সিদ্ধান্তের রেকর্ড মুছে যাবে (GitHub-এর ইতিহাসে থেকে যাবে)।", "doDelDec", id); break;
+    case "doDelDec": guarded(b, async () => { await commit("সিদ্ধান্ত মুছে ফেলা", d => { d.decisions = d.decisions.filter(x => x.id !== id); }); closeModal(); toast("মুছে ফেলা হয়েছে।"); }); break;
+    case "bylaws": formBylaws(); break;
+    case "saveBylaws": { const text = document.getElementById("f_text").value; guarded(b, async () => { await commit("নীতিমালা হালনাগাদ", d => { d.bylaws = { text, updatedAt: nowIso() }; }); closeModal(); toast("নীতিমালা সংরক্ষিত।"); }); break; }
+    case "del": formDelete(id); break;
+    case "doDelete": doDelete(b); break;
+    case "addproof": formAddProof(id); break;
+    case "saveProof": saveProof(b); break;
+    case "savecfg": saveCfg(b); break;
+    case "receipt": showReceipt(id); break;
+    case "sharereceipt": shareReceipt(id); break;
+    case "copyreceipt": copyText(receiptText(S.txns.find(x => x.id === id))); break;
+    case "report": copyText(monthlyReport()); break;
+    case "statement": memberStatement(id); break;
+    case "export": exportMenu(); break;
+    case "dljson": download(`তহবিল-ব্যাকআপ-${todayISO()}.json`, JSON.stringify(Object.assign({ exportedAt: nowIso() }, D), null, 2), "application/json"); break;
+    case "dlcsv": download(`খতিয়ান-${todayISO()}.csv`, csv(), "text/csv"); break;
+    case "import": formImport(); break;
+    case "doImport": doImport(b); break;
+    case "chpass": formChangePass(); break;
+    case "doChangePass": doChangePass(b); break;
+    case "viewproof": viewProof(b); break;
+  }
+});
+document.addEventListener("change", e => { if (["fType","fMember","fWallet"].includes(e.target.id)) { S.ui[e.target.id] = e.target.value; render(); } });
+document.addEventListener("submit", async e => {
+  e.preventDefault();
+  const btn = e.target.querySelector("button[type=submit]");
+  if (e.target.id === "unlockForm") {
+    const pass = val("u_pass"); if (!pass) return;
+    btn.disabled = true; btn.textContent = "খোলা হচ্ছে…";
+    try { await unlock(pass, document.getElementById("u_remember").checked); }
+    catch (err) { S.msg = err.name === "OperationError" ? "পাসফ্রেজ ঠিক নয়।" : errText(err); render(); }
+  }
+  if (e.target.id === "setupForm") {
+    const p1 = val("u_pass"), p2 = val("u_pass2");
+    if (p1.length < 12) { S.msg = "পাসফ্রেজ অন্তত ১২ অক্ষরের দিন।"; return render(); }
+    if (p1 !== p2) { S.msg = "দুটি পাসফ্রেজ মিলছে না।"; return render(); }
+    btn.disabled = true; btn.textContent = "তৈরি হচ্ছে…";
+    try {
+      SALT = crypto.getRandomValues(new Uint8Array(16)); KEY = await deriveKey(p1, SALT, KDF_ITER);
+      const d = emptyData(); d.cfg.groupName = val("u_name") || d.cfg.groupName; d.cfg.managerName = val("u_mgr");
+      const mgr = val("u_mgr"); if (mgr) d.members.push({ id: genId("M"), name: mgr, role: "cfo", account: "bankA", joinMonth: d.cfg.startMonth, status: "active", order: 1, createdAt: nowIso() });
+      const r = await GH.put(DATA_PATH, await encryptData(d), null, "তহবিল তৈরি");
+      FILE_SHA = r.content.sha; D = d; S.msg = "";
+      LS.set(lsKey("key"), JSON.stringify({ salt: b64(SALT), key: await exportKey(KEY) }));
+      S.phase = "ready"; TAB = "members"; history.replaceState(null, "", "#members"); render();
+    } catch (err) { S.msg = errText(err); render(); }
+  }
+});
+function route(){
+  const h = location.hash.slice(1);
+  if (h.startsWith("rcpt-")) { if (S.phase === "ready") showReceipt(h.slice(5)); return; }
+  TAB = TABS.some(t => t[0] === h) ? h : "overview";
+  render(); window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", route);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.phase === "ready" && Date.now() - S.lastLoad > 120000 && !modal.classList.contains("open")) refresh(false).catch(() => {}); });
+
+/* ---------- Boot / unlock ---------- */
+let FILE_TEXT = null;
+async function unlock(pass, remember){
+  const f = JSON.parse(FILE_TEXT);
+  const salt = unb64(f.kdf.salt);
+  const key = await deriveKey(pass, salt, f.kdf.iter || KDF_ITER);
+  D = normalize(await decryptFile(FILE_TEXT, key));
+  KEY = key; SALT = salt; S.msg = "";
+  if (remember) LS.set(lsKey("key"), JSON.stringify({ salt: f.kdf.salt, key: await exportKey(key) }));
+  afterUnlock();
+}
+function afterUnlock(){
+  S.phase = "ready";
+  const h = location.hash.slice(1);
+  if (h.startsWith("rcpt-")) { render(); showReceipt(h.slice(5)); } else route();
+}
+async function refresh(loud){
+  try {
+    const text = await loadData();
+    if (!text) return;
+    FILE_TEXT = text;
+    const f = JSON.parse(text);
+    if (b64(SALT) !== f.kdf.salt) { LS.del(lsKey("key")); KEY = null; S.phase = "locked"; S.msg = "পাসফ্রেজ বদলানো হয়েছে। নতুন পাসফ্রেজ দিন।"; render(); return; }
+    D = normalize(await decryptFile(text, KEY)); render();
+  } catch (e) { if (loud) toast("রিফ্রেশ হয়নি: " + errText(e)); }
+}
+async function boot(){
+  S.phase = "boot"; S.msg = "সংযোগ হচ্ছে…"; render();
+  if (!window.crypto || !crypto.subtle) { S.phase = "error"; S.msg = "এই ব্রাউজারে নিরাপদ এনক্রিপশন চলে না। https লিংকে, Chrome বা অন্য আধুনিক ব্রাউজারে খুলুন।"; return render(); }
+  if (!detectRepo()) { S.phase = "norepo"; return render(); }
+  GH.token = LS.get(lsKey("token")) || "";
+  S.canEdit = !!GH.token;
+  try {
+    if (GH.token) { try { S.canEdit = await GH.checkToken(); } catch (e) { if (e.status === 401) { LS.del(lsKey("token")); GH.token = ""; S.canEdit = false; toast("সংরক্ষিত টোকেনের মেয়াদ শেষ; আবার অ্যাডমিন লগইন করুন।"); } else throw e; } }
+    S.msg = "হিসাব আনা হচ্ছে…"; render();
+    const text = await loadData();
+    if (!text) { S.phase = "nodata"; S.msg = ""; return render(); }
+    FILE_TEXT = text;
+    const saved = LS.get(lsKey("key"));
+    if (saved) {
+      try {
+        const o = JSON.parse(saved), f = JSON.parse(text);
+        if (o.salt === f.kdf.salt) { KEY = await importKey(o.key); SALT = unb64(o.salt); D = normalize(await decryptFile(text, KEY)); afterUnlock(); return; }
+      } catch (e) { /* fall through to passphrase */ }
+      LS.del(lsKey("key"));
+    }
+    S.phase = "locked"; S.msg = ""; render();
+  } catch (e) { S.phase = "error"; S.msg = errText(e); render(); }
+}
+boot();
+</script>
+</body>
+</html>
